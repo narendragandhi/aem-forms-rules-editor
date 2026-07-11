@@ -1,0 +1,7 @@
+{
+    "scripts": [
+        "create path (sling:OrderedFolder) /content/dam/aem-forms-rules-editor",
+        "create path (nt:unstructured) /content/dam/aem-forms-rules-editor/jcr:content",
+        "set properties on /content/dam/aem-forms-rules-editor/jcr:content\n  set cq:conf{String} to /conf/aem-forms-rules-editor\n  set jcr:title{String} to \"AEM Forms Rules Editor\"\nend"
+    ]
+}

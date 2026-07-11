@@ -1,0 +1,6 @@
+{
+  "mobile.resourceTypes": [
+    "aem-forms-rules-editor/components/page"
+  ],
+  "README": "Indicate which page resource types should display the mobile emulators."
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workspaceFilter version="1.0">
+    <filter root="/conf/aem-forms-rules-editor" mode="merge"/>
+    <filter root="/content/aem-forms-rules-editor" mode="merge"/>
+    <filter root="/content/dam/aem-forms-rules-editor" mode="merge">
+        <exclude pattern="/content/dam/aem-forms-rules-editor(/.*)?"/>
+        <include pattern="/content/dam/aem-forms-rules-editor/jcr:content(/.*)?"/>
+    </filter>
+    <filter root="/content/dam/aem-forms-rules-editor/asset.jpg" mode="merge"/>
+    <filter root="/content/experience-fragments/aem-forms-rules-editor" mode="merge"/>
+    <filter root="/content/dam/formsanddocuments-themes/aem-forms-rules-editor" mode="merge"/>
+    <filter root="/content/dam/formsanddocuments-fdm/aem-forms-rules-editor" mode="merge"/>
+    <filter root="/content/dam/aem-forms-rules-editor/sample_logo.png" mode="merge"/>
+    <filter root="/content/dam/aem-forms-rules-editor/sample_terms.png" mode="merge"/>
+    <filter root="/content/dam/aem-forms-rules-editor/wknd_logo.png" mode="merge"/>
+</workspaceFilter>
