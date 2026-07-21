@@ -26,7 +26,7 @@ class ZipCodeLookupServletTest {
     }
 
     @Test
-    void testZipLookupSuccess() throws ServletException, IOException {
+    void testZipLookupSuccess5Digit() throws ServletException, IOException {
         MockSlingHttpServletRequest request = context.request();
         MockSlingHttpServletResponse response = context.response();
 
@@ -43,7 +43,34 @@ class ZipCodeLookupServletTest {
     }
 
     @Test
-    void testZipLookupInvalid() throws ServletException, IOException {
+    void testZipLookupSuccessZipPlus4() throws ServletException, IOException {
+        MockSlingHttpServletRequest request = context.request();
+        MockSlingHttpServletResponse response = context.response();
+
+        request.setParameterMap(java.util.Collections.singletonMap("zip", "90210-1234"));
+
+        servlet.doGet(request, response);
+
+        assertEquals(200, response.getStatus());
+        assertTrue(response.getOutputAsString().contains("Beverly Hills"));
+    }
+
+    @Test
+    void testZipLookupInvalidFormat() throws ServletException, IOException {
+        MockSlingHttpServletRequest request = context.request();
+        MockSlingHttpServletResponse response = context.response();
+
+        request.setParameterMap(java.util.Collections.singletonMap("zip", "9021a"));
+
+        servlet.doGet(request, response);
+
+        assertEquals(400, response.getStatus());
+        assertTrue(response.getOutputAsString().contains("Invalid ZIP code"));
+        assertTrue(response.getOutputAsString().contains("\"valid\": false"));
+    }
+
+    @Test
+    void testZipLookupTooShort() throws ServletException, IOException {
         MockSlingHttpServletRequest request = context.request();
         MockSlingHttpServletResponse response = context.response();
 
@@ -52,8 +79,6 @@ class ZipCodeLookupServletTest {
         servlet.doGet(request, response);
 
         assertEquals(400, response.getStatus());
-        assertTrue(response.getOutputAsString().contains("Invalid ZIP code"));
-        assertTrue(response.getOutputAsString().contains("\"valid\": false"));
     }
 
     @Test

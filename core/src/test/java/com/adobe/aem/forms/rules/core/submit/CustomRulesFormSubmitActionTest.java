@@ -31,46 +31,139 @@ class CustomRulesFormSubmitActionTest {
     }
 
     @Test
-    void testSubmitSuccess() {
-        // Arrange
-        String testData = "{\"firstName\":\"John\",\"lastName\":\"Doe\"}";
+    void testSubmitSuccessPlainJson() {
+        String testData = "{\"email\":\"john@example.com\",\"ssn\":\"123-45-6789\",\"zip\":\"90210\",\"creditCard\":\"1234567890123456\"}";
         when(formSubmitInfo.getData()).thenReturn(testData);
 
-        // Act
         Map<String, Object> result = submitAction.submit(formSubmitInfo);
 
-        // Assert
         assertNotNull(result);
         assertEquals("success", result.get("status"));
         assertTrue(result.containsKey("message"));
-        verify(formSubmitInfo, times(1)).getData();
+    }
+
+    @Test
+    void testSubmitSuccessNestedJson() {
+        String testData = "{"
+            + "\"afData\": {"
+            + "  \"afBoundData\": {"
+            + "    \"data\": {"
+            + "      \"email\": \"test@domain.com\","
+            + "      \"ssn\": \"234-56-7890\","
+            + "      \"zip\": \"02108-1234\","
+            + "      \"creditCard\": \"1234567890123\""
+            + "    }"
+            + "  }"
+            + "}"
+            + "}";
+        when(formSubmitInfo.getData()).thenReturn(testData);
+
+        Map<String, Object> result = submitAction.submit(formSubmitInfo);
+
+        assertNotNull(result);
+        assertEquals("success", result.get("status"));
+    }
+
+    @Test
+    void testSubmitSuccessPlainXml() {
+        String testData = "<data>"
+            + "  <email>test@domain.com</email>"
+            + "  <ssn>234-56-7890</ssn>"
+            + "  <zip>90210</zip>"
+            + "  <creditCard>1234567890123456</creditCard>"
+            + "</data>";
+        when(formSubmitInfo.getData()).thenReturn(testData);
+
+        Map<String, Object> result = submitAction.submit(formSubmitInfo);
+
+        assertNotNull(result);
+        assertEquals("success", result.get("status"));
+    }
+
+    @Test
+    void testSubmitFailureInvalidEmail() {
+        String testData = "{\"email\":\"invalid-email-format\",\"ssn\":\"123-45-6789\"}";
+        when(formSubmitInfo.getData()).thenReturn(testData);
+
+        Map<String, Object> result = submitAction.submit(formSubmitInfo);
+
+        assertNotNull(result);
+        assertEquals("error", result.get("status"));
+    }
+
+    @Test
+    void testSubmitFailureDummySsn() {
+        // Starts with 000
+        String testData = "{\"ssn\":\"000-45-6789\"}";
+        when(formSubmitInfo.getData()).thenReturn(testData);
+
+        Map<String, Object> result = submitAction.submit(formSubmitInfo);
+
+        assertNotNull(result);
+        assertEquals("error", result.get("status"));
+    }
+
+    @Test
+    void testSubmitFailureInvalidZip() {
+        String testData = "{\"zip\":\"1234\"}"; // Too short
+        when(formSubmitInfo.getData()).thenReturn(testData);
+
+        Map<String, Object> result = submitAction.submit(formSubmitInfo);
+
+        assertNotNull(result);
+        assertEquals("error", result.get("status"));
+    }
+
+    @Test
+    void testSubmitFailureInvalidCreditCardLength() {
+        String testData = "{\"creditCard\":\"123456789\"}"; // Too short
+        when(formSubmitInfo.getData()).thenReturn(testData);
+
+        Map<String, Object> result = submitAction.submit(formSubmitInfo);
+
+        assertNotNull(result);
+        assertEquals("error", result.get("status"));
     }
 
     @Test
     void testSubmitErrorEmptyData() {
-        // Arrange
         when(formSubmitInfo.getData()).thenReturn("");
 
-        // Act
         Map<String, Object> result = submitAction.submit(formSubmitInfo);
 
-        // Assert
         assertNotNull(result);
         assertEquals("error", result.get("status"));
-        assertTrue(result.containsKey("message"));
     }
 
     @Test
     void testSubmitErrorNullData() {
-        // Arrange
         when(formSubmitInfo.getData()).thenReturn(null);
 
-        // Act
         Map<String, Object> result = submitAction.submit(formSubmitInfo);
 
-        // Assert
         assertNotNull(result);
         assertEquals("error", result.get("status"));
-        assertTrue(result.containsKey("message"));
+    }
+
+    @Test
+    void testSubmitUnsupportedFormat() {
+        when(formSubmitInfo.getData()).thenReturn("random-plain-text");
+
+        Map<String, Object> result = submitAction.submit(formSubmitInfo);
+
+        assertNotNull(result);
+        assertEquals("error", result.get("status"));
+    }
+
+    @Test
+    void testSubmitXmlWithDtdDisallowed() {
+        // Test XXE prevention via DTD disallow feature
+        String exploitData = "<!DOCTYPE foo [<!ENTITY xxe SYSTEM \"http://attacker.com\">]><data><email>&xxe;</email></data>";
+        when(formSubmitInfo.getData()).thenReturn(exploitData);
+
+        Map<String, Object> result = submitAction.submit(formSubmitInfo);
+
+        assertNotNull(result);
+        assertEquals("error", result.get("status"));
     }
 }

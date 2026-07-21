@@ -13,10 +13,12 @@ import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * A backend proxy servlet for ZIP code lookup.
  * Demonstrates AEM backend integrations supporting client-side custom functions.
+ * Validates input parameters programmatically and prevents log injection.
  */
 @Component(
     service = { Servlet.class },
@@ -30,6 +32,8 @@ public class ZipCodeLookupServlet extends SlingAllMethodsServlet {
 
     private static final long serialVersionUID = 1L;
     private static final Logger LOG = LoggerFactory.getLogger(ZipCodeLookupServlet.class);
+
+    private static final Pattern ZIP_PATTERN = Pattern.compile("^\\d{5}(-\\d{4})?$");
 
     // Mock DB of ZIP codes for demonstration
     private static final Map<String, String> ZIP_DATABASE = new HashMap<>();
@@ -50,15 +54,27 @@ public class ZipCodeLookupServlet extends SlingAllMethodsServlet {
         response.setCharacterEncoding("UTF-8");
 
         String zip = request.getParameter("zip");
-        LOG.info("ZipCodeLookupServlet: Looking up ZIP code: {}", zip);
+        if (zip != null) {
+            zip = zip.trim();
+        }
 
-        if (zip == null || zip.trim().length() != 5) {
+        // Clean input for secure logging (prevent Log Injection)
+        String safeZipLog = (zip == null) ? "null" : zip.replaceAll("[^a-zA-Z0-9-]", "");
+        LOG.info("ZipCodeLookupServlet: Looking up ZIP code: {}", safeZipLog);
+
+        if (zip == null || zip.isEmpty() || !ZIP_PATTERN.matcher(zip).matches()) {
             response.setStatus(SlingHttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().write("{\"error\": \"Invalid ZIP code parameter. Must be 5 digits.\", \"valid\": false}");
+            response.getWriter().write("{\"error\": \"Invalid ZIP code parameter. Must be 5 digits (e.g. 12345) or ZIP+4 (e.g. 12345-6789).\", \"valid\": false}");
             return;
         }
 
-        String jsonResponse = ZIP_DATABASE.get(zip.trim());
+        // If it's ZIP+4 (9 digits with a hyphen), extract the first 5 digits for the database lookup
+        String lookupKey = zip;
+        if (zip.contains("-")) {
+            lookupKey = zip.split("-")[0];
+        }
+
+        String jsonResponse = ZIP_DATABASE.get(lookupKey);
 
         if (jsonResponse != null) {
             response.setStatus(SlingHttpServletResponse.SC_OK);
