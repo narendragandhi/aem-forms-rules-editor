@@ -8,3 +8,11 @@ string-utils.js
 data-utils.js
 geolocation.js
 file-utils.js
+xfa-host.js
+xfa-event.js
+xfa-form.js
+xfa-field.js
+xfa-instance.js
+xfa-layout.js
+xfa-formcalc.js
+xfa-acrobat.js

@@ -1,25 +1,40 @@
 # AEM Forms Rules Editor — Comprehensive Library
 
-A production-ready **comprehensive rules library** for AEM Forms Adaptive Forms (AFv2) Core Components. Extends the visual Rules Editor with **90+ client-side JavaScript functions**, **6 server-side OSGi Submit Actions**, **6 backend proxy Servlets**, and **2 Prefill Services** — all organized by category for easy loading and maintenance.
+A production-ready **comprehensive rules library** for AEM Forms — covering both **Adaptive Forms (AFv2) Core Components** and **Interactive Communication (IC) Fragments with XFA scripting**. Includes **176 client-side JavaScript functions** (94 AFv2 + 82 XFA IC), **6 server-side OSGi Submit Actions**, **6 backend proxy Servlets**, and **2 Prefill Services**.
 
 ---
 
 ## Library at a Glance
 
-### Client-Side: 90+ JavaScript Functions (8 Categories)
+### Client-Side: 176 JavaScript Functions
+
+#### AFv2 Functions (94 — 8 Categories)
 
 | Category | File | Functions | Description |
 |---|---|---|---|
 | **Validation** | `validation.js` | 25 | US & international ID, contact, network, format validators |
 | **Formatting** | `formatting.js` | 15 | Phone, SSN, credit card, currency, date, name formatting |
 | **Financial** | `financial.js` | 12 | Loan, interest, tax, discount, amortization calculations |
-| **Date/Time** | `date-utils.js` | 12 | Date validation, manipulation, business day calculations |
+| **Date/Time** | `date-utils.js` | 14 | Date validation, manipulation, business day calculations |
 | **Strings** | `string-utils.js` | 10 | Text processing, case conversion, slugify, truncate |
 | **Data** | `data-utils.js` | 8 | Base64, UUID, object flattening, query string utilities |
 | **Geolocation** | `geolocation.js` | 5 | ZIP lookup, distance, state code validation |
 | **Files** | `file-utils.js` | 5 | File type, extension, size validation and formatting |
 
-### Server-Side: 6 Submit Actions
+#### XFA IC Fragment Functions (82 — 8 Categories)
+
+| Category | File | Functions | Description |
+|---|---|---|---|
+| **XFA Host** | `xfa-host.js` | 12 | Alert, focus, page navigation, reset, environment detection |
+| **XFA Events** | `xfa-event.js` | 10 | Event target, commit keys, text changes, modifier keys |
+| **XFA Form** | `xfa-form.js` | 10 | SOM node resolution, property access, form-wide operations |
+| **XFA Fields** | `xfa-field.js` | 12 | Read/write values, presence, access, visibility, highlighting |
+| **XFA Instances** | `xfa-instance.js` | 8 | Repeat management, add/remove/insert/set instance counts |
+| **XFA Layout** | `xfa-layout.js` | 7 | Field bounds, page positioning, centering, dimensions |
+| **FormCalc** | `xfa-formcalc.js` | 15 | Math, date, comparison utilities (FormCalc API equivalents) |
+| **Acrobat API** | `xfa-acrobat.js` | 8 | app.alert, timers, URL launch, console, system sounds |
+
+### Server-Side: 4 Submit Actions
 
 | Submit Action | Description |
 |---|---|
@@ -28,7 +43,7 @@ A production-ready **comprehensive rules library** for AEM Forms Adaptive Forms 
 | `SendEmailSubmitAction` | Send email notification on form submission |
 | `AuditLogSubmitAction` | Write structured audit trail entries to JCR |
 
-### Server-Side: 6 Backend Servlets
+### Server-Side: 4 Backend Servlets
 
 | Servlet | Endpoint | Description |
 |---|---|---|
@@ -65,7 +80,7 @@ mvn clean install -PautoInstallSinglePackagePublish   # Deploy to publish (4503)
 1. Open the form in Authoring editor
 2. Select the **Adaptive Form Container** component
 3. Add `aem-forms-rules-editor.customfunctions` to the **Client Library Category** field
-4. All 90+ functions are now available in the Rules Editor dropdown
+4. All 176 functions are now available in the Rules Editor dropdown
 
 ---
 
@@ -155,7 +170,7 @@ mvn clean install -PautoInstallSinglePackagePublish   # Deploy to publish (4503)
 | `calculateDepreciation` | `cost, salvage, life` | `number` | Annual straight-line depreciation |
 | `calculateAmortization` | `P, r, t` | `array` | Monthly payment schedule array |
 
-### Date/Time (`date-utils.js` — 12 functions)
+### Date/Time (`date-utils.js` — 14 functions)
 
 | Function | Input | Returns | Description |
 |---|---|---|---|
@@ -171,6 +186,8 @@ mvn clean install -PautoInstallSinglePackagePublish   # Deploy to publish (4503)
 | `getLastDayOfMonth` | `string` | `string` | Last day of month |
 | `formatDateRelative` | `string` | `string` | "3 days ago", "in 2 weeks" |
 | `calculateAge` | `string` | `number` | Age in years from birthdate |
+| `isLeapYear` | `string` | `boolean` | Check if year is a leap year |
+| `isDateRangeValid` | `string, string` | `boolean` | End date is after start date |
 
 ### String Utilities (`string-utils.js` — 10 functions)
 
@@ -222,6 +239,134 @@ mvn clean install -PautoInstallSinglePackagePublish   # Deploy to publish (4503)
 
 ---
 
+### XFA IC Fragment Functions
+
+The following 82 functions are designed for **Interactive Communication (IC) Fragments** using XFA scripting. They wrap `xfa.*` objects and provide safe, defensive access to XFA APIs.
+
+#### XFA Host (`xfa-host.js` — 12 functions)
+
+| Function | Signature | Description |
+|---|---|---|
+| `xfaAlert` | `(message, title, type)` | Show a modal XFA alert dialog |
+| `xfaSetFocus` | `(fieldRef)` | Set focus to a field by SOM path or object |
+| `xfaPageUp` | `()` | Navigate to the previous page |
+| `xfaPageDown` | `()` | Navigate to the next page |
+| `xfaGotoPage` | `(pageNumber)` | Navigate to a specific page (0-based) |
+| `xfaResetForm` | `()` | Reset all fields to defaults |
+| `xfaGetCurrentPage` | `()` | Get current page number (0-based) |
+| `xfaGetPageCount` | `()` | Get total page count |
+| `xfaGetHostName` | `()` | Get host application name |
+| `xfaGetAppType` | `()` | Get runtime environment type |
+| `xfaIsHTML5` | `()` | True if running in HTML5 viewer |
+| `xfaIsAcrobat` | `()` | True if running in Acrobat |
+
+#### XFA Events (`xfa-event.js` — 10 functions)
+
+| Function | Signature | Description |
+|---|---|---|
+| `getEventTarget` | `()` | Get the XFA event target object |
+| `getEventTargetName` | `()` | Get SOM name of event-triggering element |
+| `getNewText` | `()` | Get field text after user change |
+| `getPrevText` | `()` | Get field text before user change |
+| `isCommitKey` | `(key)` | Check if key is a commit key |
+| `getCommitKey` | `()` | Get the raw commit key value |
+| `isShiftPressed` | `()` | Check if Shift was held during event |
+| `getChangeValue` | `()` | Get xfa.event.change value |
+| `isFieldEmptyAfterChange` | `()` | Check if field is empty after user input |
+| `getFieldFromEvent` | `()` | Get event target as a field reference |
+
+#### XFA Form (`xfa-form.js` — 10 functions)
+
+| Function | Signature | Description |
+|---|---|---|
+| `resolveNode` | `(somPath)` | Safely resolve an XFA node by SOM path |
+| `resolveNodes` | `(somPath)` | Resolve multiple XFA nodes, returns array |
+| `getNodeText` | `(somPath)` | Get rawValue of a node by SOM path |
+| `setNodeText` | `(somPath, value)` | Set rawValue of a node by SOM path |
+| `getNodeProperty` | `(somPath, propertyName)` | Read any property from an XFA node |
+| `setNodeProperty` | `(somPath, propertyName, value)` | Set any property on an XFA node |
+| `execFormCalculate` | `()` | Trigger form-wide recalculation |
+| `execFormValidate` | `()` | Trigger form-wide validation |
+| `getInvalidFields` | `()` | Get list of fields that failed validation |
+| `getNodeClassName` | `(somPath)` | Get the XFA class name of a node |
+
+#### XFA Fields (`xfa-field.js` — 12 functions)
+
+| Function | Signature | Description |
+|---|---|---|
+| `getFieldValue` | `(somPath)` | Safe rawValue read with null handling |
+| `setFieldValue` | `(somPath, value)` | Safe rawValue write with null handling |
+| `setFieldPresence` | `(somPath, presence)` | Set field visibility/hidden state |
+| `setFieldAccess` | `(somPath, access)` | Set field access (open/readOnly/protected) |
+| `setFieldMandatory` | `(somPath, mandatory)` | Set mandatory/nullTest property |
+| `clearField` | `(somPath)` | Clear field value to empty string |
+| `fieldExists` | `(somPath)` | Check if a field exists at the SOM path |
+| `copyFieldValue` | `(source, target)` | Copy rawValue from one field to another |
+| `isFieldVisible` | `(somPath)` | Check if field presence is "visible" |
+| `isFieldReadOnly` | `(somPath)` | Check if field is readOnly or protected |
+| `getFieldClassName` | `(somPath)` | Get the className of a field object |
+| `setFieldHighlight` | `(somPath, fillColor)` | Change fill color to highlight a field |
+
+#### XFA Instances (`xfa-instance.js` — 8 functions)
+
+| Function | Signature | Description |
+|---|---|---|
+| `addInstance` | `(somExpression)` | Add new instance to end of repeated element |
+| `removeInstance` | `(somExpression, index)` | Remove instance at given 0-based index |
+| `insertInstance` | `(somExpression, index)` | Insert new instance before given index |
+| `getInstanceCount` | `(somExpression)` | Get current instance count |
+| `setInstanceCount` | `(somExpression, targetCount)` | Set exact instance count |
+| `getLastInstanceField` | `(instanceManagerSom, fieldName)` | Get field value in last instance |
+| `clearAllInstances` | `(somExpression)` | Remove all instances except the first |
+| `getInstanceManager` | `(somExpression)` | Resolve an instanceManager from SOM path |
+
+#### XFA Layout (`xfa-layout.js` — 7 functions)
+
+| Function | Signature | Description |
+|---|---|---|
+| `getFieldBounds` | `(fieldName)` | Get bounding box `{x, y, w, h}` in points |
+| `setFieldBounds` | `(fieldName, x, y, w, h)` | Position and size a field |
+| `getLayoutPageCount` | `()` | Get total pages via $layout object |
+| `getFieldPageNumber` | `(fieldName)` | Get 0-based page number of field |
+| `isFieldOnPage` | `(fieldName, pageIndex)` | Check if field is on specific page |
+| `centerFieldHorizontally` | `(fieldName)` | Center field horizontally in container |
+| `getFieldDimensions` | `(fieldName)` | Get width and height `{w, h}` in points |
+
+#### FormCalc Utilities (`xfa-formcalc.js` — 15 functions)
+
+| Function | Signature | Description |
+|---|---|---|
+| `xfaAbs` | `(value)` | Absolute value |
+| `xfaAvg` | `(values)` | Arithmetic mean of array |
+| `xfaCeil` | `(value)` | Round up to nearest integer |
+| `xfaFloor` | `(value)` | Round down to nearest integer |
+| `xfaRound` | `(value, places)` | Round to N decimal places |
+| `xfaMin` | `(values)` | Smallest value in array |
+| `xfaMax` | `(values)` | Largest value in array |
+| `xfaSum` | `(values)` | Sum of all values |
+| `xfaWithin` | `(value, low, high)` | True if value is in [low, high] |
+| `xfaHasValue` | `(value)` | True if not null/undefined/empty |
+| `xfaIsNull` | `(value)` | True if null, undefined, or empty |
+| `xfaDateNow` | `()` | Current date as YYYYMMDD |
+| `xfaTimeNow` | `()` | Current time as HHMMSS |
+| `xfaDateToNum` | `(dateStr)` | Date string to day-count numeric |
+| `xfaNumToDate` | `(num)` | Day-count numeric to MM/DD/YYYY |
+
+#### Acrobat API (`xfa-acrobat.js` — 8 functions)
+
+| Function | Signature | Description |
+|---|---|---|
+| `acrobatAlert` | `(message, type, timeout)` | app.alert() wrapper |
+| `acrobatSetTimeout` | `(func, delay)` | app.setTimeOut() wrapper |
+| `acrobatClearTimeout` | `(timeoutId)` | app.clearTimeOut() wrapper |
+| `acrobatSetInterval` | `(func, interval)` | app.setInterval() wrapper |
+| `acrobatClearInterval` | `(intervalId)` | app.clearInterval() wrapper |
+| `acrobatLaunchURL` | `(url, newWindow)` | app.launchURL() wrapper |
+| `acrobatBeep` | `(cAlertType)` | app.beep() wrapper |
+| `acrobatConsolePrint` | `(message)` | console.println() wrapper |
+
+---
+
 ## Project Structure
 
 ```
@@ -243,17 +388,25 @@ aem-forms-rules-editor/
         TaxCalculationServlet.java        # US state tax calculation
     src/test/java/.../                    # Unit tests for all components
   ui.apps/.../clientlib-custom-functions/
-    js.txt                                # Load order for all 8 category files
+    js.txt                                # Load order for all 18 JS files
     js/
       custom-functions.js                 # Namespace initialization
-      validation.js                       # 25 validation functions
-      formatting.js                       # 15 formatting functions
-      financial.js                        # 12 financial calculations
-      date-utils.js                       # 12 date/time functions
-      string-utils.js                     # 10 string utilities
-      data-utils.js                       # 8 data transformation functions
-      geolocation.js                      # 5 geolocation functions
-      file-utils.js                       # 5 file utility functions
+      validation.js                       # 25 AFv2 validation functions
+      formatting.js                       # 15 AFv2 formatting functions
+      financial.js                        # 12 AFv2 financial calculations
+      date-utils.js                       # 14 AFv2 date/time functions
+      string-utils.js                     # 10 AFv2 string utilities
+      data-utils.js                       # 8 AFv2 data transformation functions
+      geolocation.js                      # 5 AFv2 geolocation functions
+      file-utils.js                       # 5 AFv2 file utility functions
+      xfa-host.js                         # 12 XFA host wrappers
+      xfa-event.js                        # 10 XFA event helpers
+      xfa-form.js                         # 10 XFA form DOM traversal
+      xfa-field.js                        # 12 XFA field operations
+      xfa-instance.js                     # 8 XFA instance management
+      xfa-layout.js                       # 7 XFA layout/positioning
+      xfa-formcalc.js                     # 15 FormCalc JS equivalents
+      xfa-acrobat.js                      # 8 Acrobat API wrappers
   ui.content/                             # Themes, FDMs, templates
   ui.frontend/                            # Webpack build
 ```
