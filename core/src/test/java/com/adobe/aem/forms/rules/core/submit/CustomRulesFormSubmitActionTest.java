@@ -1,12 +1,16 @@
 package com.adobe.aem.forms.rules.core.submit;
 
 import com.adobe.aemds.guide.model.FormSubmitInfo;
+import com.adobe.forms.common.service.FileAttachmentWrapper;
+import org.apache.sling.api.resource.Resource;
+import org.apache.sling.api.resource.ResourceResolver;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collections;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,6 +23,15 @@ class CustomRulesFormSubmitActionTest {
 
     @Mock
     private FormSubmitInfo formSubmitInfo;
+
+    @Mock
+    private FileAttachmentWrapper fileAttachment;
+
+    @Mock
+    private Resource containerResource;
+
+    @Mock
+    private ResourceResolver resourceResolver;
 
     @BeforeEach
     void setUp() {
@@ -78,6 +91,28 @@ class CustomRulesFormSubmitActionTest {
 
         assertNotNull(result);
         assertEquals("success", result.get("status"));
+    }
+
+    @Test
+    void testSubmitWithAttachmentsAndWorkflow() {
+        String testData = "{\"email\":\"john@example.com\",\"ssn\":\"123-45-6789\",\"zip\":\"90210\"}";
+        
+        when(formSubmitInfo.getData()).thenReturn(testData);
+        when(formSubmitInfo.getFileAttachments()).thenReturn(Collections.singletonList(fileAttachment));
+        when(fileAttachment.getFileName()).thenReturn("test-doc.pdf");
+        when(fileAttachment.getContentType()).thenReturn("application/pdf");
+        when(fileAttachment.getUri()).thenReturn("temp:/test-doc.pdf");
+        
+        // Mock container path and resource resolver
+        when(formSubmitInfo.getFormContainerPath()).thenReturn("/content/forms/af/test-form");
+        when(formSubmitInfo.getFormContainerResource()).thenReturn(containerResource);
+        when(containerResource.getResourceResolver()).thenReturn(resourceResolver);
+
+        Map<String, Object> result = submitAction.submit(formSubmitInfo);
+
+        assertNotNull(result);
+        assertEquals("success", result.get("status"));
+        verify(fileAttachment, times(1)).getFileName();
     }
 
     @Test
