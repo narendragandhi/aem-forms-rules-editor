@@ -1,2 +1,10 @@
 #base=js
 custom-functions.js
+validation.js
+formatting.js
+financial.js
+date-utils.js
+string-utils.js
+data-utils.js
+geolocation.js
+file-utils.js

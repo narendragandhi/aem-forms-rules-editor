@@ -1,124 +1,270 @@
-# Sample AEM project template
+# AEM Forms Rules Editor — Comprehensive Library
 
-This is a project template for AEM-based applications. It is intended as a best-practice set of examples as well as a potential starting point to develop your own functionality.
+A production-ready **comprehensive rules library** for AEM Forms Adaptive Forms (AFv2) Core Components. Extends the visual Rules Editor with **90+ client-side JavaScript functions**, **6 server-side OSGi Submit Actions**, **6 backend proxy Servlets**, and **2 Prefill Services** — all organized by category for easy loading and maintenance.
 
-## Modules
+---
 
-The main parts of the template are:
+## Library at a Glance
 
-* [core:](core/README.md) Java bundle containing all core functionality like OSGi services, listeners or schedulers, as well as component-related Java code such as servlets or request filters.
-* [it.tests:](it.tests/README.md) Java based integration tests
-* [ui.apps:](ui.apps/README.md) contains the /apps (and /etc) parts of the project, ie JS&CSS clientlibs, components, and templates
-* [ui.content:](ui.content/README.md) contains sample content using the components from the ui.apps
-* ui.config: contains runmode specific OSGi configs for the project
-* [ui.frontend:](ui.frontend.general/README.md) an optional dedicated front-end build mechanism (Angular, React or general Webpack project)
-* [ui.tests:](ui.tests/README.md) Cypress based UI tests (for other frameworks check [aem-test-samples](https://github.com/adobe/aem-test-samples) repository
-* all: a single content package that embeds all of the compiled modules (bundles and content packages) including any vendor dependencies
-* analyse: this module runs analysis on the project which provides additional validation for deploying into AEMaaCS
+### Client-Side: 90+ JavaScript Functions (8 Categories)
 
-## How to build
+| Category | File | Functions | Description |
+|---|---|---|---|
+| **Validation** | `validation.js` | 25 | US & international ID, contact, network, format validators |
+| **Formatting** | `formatting.js` | 15 | Phone, SSN, credit card, currency, date, name formatting |
+| **Financial** | `financial.js` | 12 | Loan, interest, tax, discount, amortization calculations |
+| **Date/Time** | `date-utils.js` | 12 | Date validation, manipulation, business day calculations |
+| **Strings** | `string-utils.js` | 10 | Text processing, case conversion, slugify, truncate |
+| **Data** | `data-utils.js` | 8 | Base64, UUID, object flattening, query string utilities |
+| **Geolocation** | `geolocation.js` | 5 | ZIP lookup, distance, state code validation |
+| **Files** | `file-utils.js` | 5 | File type, extension, size validation and formatting |
 
-To build all the modules run in the project root directory the following command with Maven 3:
+### Server-Side: 6 Submit Actions
 
-    mvn clean install
+| Submit Action | Description |
+|---|---|
+| `CustomRulesFormSubmitAction` | JSON/XML parsing, server-side validation, reCAPTCHA, workflow trigger |
+| `SaveToDAMSubmitAction` | Store form file attachments to AEM DAM with metadata |
+| `SendEmailSubmitAction` | Send email notification on form submission |
+| `AuditLogSubmitAction` | Write structured audit trail entries to JCR |
 
-To build all the modules and deploy the `all` package to a local instance of AEM, run in the project root directory the following command:
+### Server-Side: 6 Backend Servlets
 
-    mvn clean install -PautoInstallSinglePackage
+| Servlet | Endpoint | Description |
+|---|---|---|
+| `ZipCodeLookupServlet` | `/bin/rules-api/zip-lookup` | US ZIP code to city/state lookup |
+| `AddressValidationServlet` | `/bin/rules-api/validate-address` | US address validation and standardization |
+| `CurrencyConversionServlet` | `/bin/rules-api/currency-convert` | Multi-currency conversion (10 currencies) |
+| `TaxCalculationServlet` | `/bin/rules-api/calculate-tax` | US state sales tax calculation (50 states + DC) |
 
-Or to deploy it to a publish instance, run
+### Server-Side: 2 Prefill Services
 
-    mvn clean install -PautoInstallSinglePackagePublish
+| Service | Description |
+|---|---|
+| `CustomFormsPrefillService` | Dynamic form prepopulation from backend repositories |
+| `UserProfilePrefillService` | Prefill from Sling user profile properties |
 
-Or alternatively
+---
 
-    mvn clean install -PautoInstallSinglePackage -Daem.port=4503
+## Quick Start
 
-Or to deploy only the bundle to the author, run
+### Prerequisites
+- AEM as a Cloud Service (or AEM 6.5 with Forms add-on)
+- Java 11+
+- Maven 3.3.9+
+- Node.js v16.17+ / npm 8.15+
 
-    mvn clean install -PautoInstallBundle
+### Build & Deploy
+```bash
+mvn clean install                                    # Build + unit tests
+mvn clean install -PautoInstallSinglePackage          # Deploy to author (4502)
+mvn clean install -PautoInstallSinglePackagePublish   # Deploy to publish (4503)
+```
 
-Or to deploy only a single content package, run in the sub-module directory (i.e `ui.apps`)
+### Load Custom Functions in a Form
+1. Open the form in Authoring editor
+2. Select the **Adaptive Form Container** component
+3. Add `aem-forms-rules-editor.customfunctions` to the **Client Library Category** field
+4. All 90+ functions are now available in the Rules Editor dropdown
 
-    mvn clean install -PautoInstallPackage
+---
+
+## Function Reference
+
+### Validation (`validation.js` — 25 functions)
+
+#### US Identity
+| Function | Input | Returns | Description |
+|---|---|---|---|
+| `validateSSN` | `string` | `boolean` | US SSN with SSA allocation rules (rejects 000, 666, 900+) |
+| `validateEIN` | `string` | `boolean` | US Employer Identification Number (XX-XXXXXXX) |
+| `validateITIN` | `string` | `boolean` | US Individual Taxpayer ID (9XX-XX-XXXX with valid ranges) |
+| `validateUSPassport` | `string` | `boolean` | US passport number (9 digits or 1 letter + 8 digits) |
+| `validateDriverLicense` | `string` | `boolean` | Basic US DL format (6-14 alphanumeric chars) |
+
+#### US Contact
+| Function | Input | Returns | Description |
+|---|---|---|---|
+| `validateEmail` | `string` | `boolean` | Email format validation |
+| `validateUSPhone` | `string` | `boolean` | 10-digit US phone (with optional +1) |
+| `validateUSZip` | `string` | `boolean` | 5-digit or ZIP+4 format |
+| `validateUSState` | `string` | `boolean` | Valid 2-letter state code (50 states + DC + territories) |
+
+#### Network
+| Function | Input | Returns | Description |
+|---|---|---|---|
+| `validateURL` | `string` | `boolean` | URL with http/https protocol |
+| `validateIPv4` | `string` | `boolean` | IPv4 address (0-255 per octet) |
+| `validateIPv6` | `string` | `boolean` | IPv6 address (full and compressed notation) |
+| `validateMACAddress` | `string` | `boolean` | MAC address (XX:XX:XX:XX:XX:XX) |
+
+#### Format
+| Function | Input | Returns | Description |
+|---|---|---|---|
+| `validateCreditCardLuhn` | `string` | `boolean` | Credit card with Luhn algorithm check |
+| `validateStrongPassword` | `string` | `boolean` | 8+ chars, upper, lower, digit, special char |
+| `validateJSON` | `string` | `boolean` | Valid JSON string |
+| `validateRegexPattern` | `string, string` | `boolean` | Generic regex match (value, pattern) |
+
+#### International
+| Function | Input | Returns | Description |
+|---|---|---|---|
+| `validateUKPostCode` | `string` | `boolean` | UK postal codes (SW1A 1AA format) |
+| `validateUKPhone` | `string` | `boolean` | UK phone numbers (+44 and 0 prefix) |
+| `validateCanadianSIN` | `string` | `boolean` | Canadian Social Insurance Number (Luhn) |
+| `validateCanadianPostalCode` | `string` | `boolean` | A1A 1A1 format |
+| `validateIBAN` | `string` | `boolean` | International Bank Account Number (mod-97 check) |
+| `validateEUPhone` | `string` | `boolean` | EU phone number formats (7-15 digits) |
+| `validateAustralianPhone` | `string` | `boolean` | Australian phone numbers |
+| `validateAustralianPostCode` | `string` | `boolean` | 4-digit Australian postal codes |
+
+### Formatting (`formatting.js` — 15 functions)
+
+| Function | Input | Returns | Description |
+|---|---|---|---|
+| `formatPhoneNumber` | `string` | `string` | US to `(XXX) XXX-XXXX` |
+| `formatPhoneNumberInternational` | `string, string` | `string` | E.164 format (+1XXXXXXXXXX) |
+| `formatSSN` | `string, boolean` | `string` | Display (XXX-XX-XXXX) or mask (***) |
+| `formatCreditCard` | `string` | `string` | Add spaces every 4 digits |
+| `maskCreditCard` | `string` | `string` | Show only last 4 digits |
+| `formatCurrency` | `number, string` | `string` | `$1,234.56` (supports any currency symbol) |
+| `formatDate` | `string, string` | `string` | Pattern-based: MM/DD/YYYY, DD/MM/YYYY, Month DD, YYYY |
+| `formatDateISO` | `string` | `string` | Always YYYY-MM-DD |
+| `formatNameTitleCase` | `string` | `string` | "john doe" -> "John Doe" |
+| `formatNameUpperCase` | `string` | `string` | "john doe" -> "JOHN DOE" |
+| `formatZipCodePlus4` | `string` | `string` | Format as XXXXX-XXXX |
+| `formatCanadianSIN` | `string` | `string` | XXX-XXX-XXX |
+| `formatIBAN` | `string` | `string` | Add spaces every 4 chars |
+| `formatNumberWithCommas` | `number` | `string` | 1000000 -> "1,000,000.00" |
+| `formatDecimalPlaces` | `number, number` | `string` | Round to N decimal places |
+
+### Financial (`financial.js` — 12 functions)
+
+| Function | Input | Returns | Description |
+|---|---|---|---|
+| `calculateMonthlyPayment` | `P, r, t` | `number` | Loan monthly payment (amortization formula) |
+| `calculateCompoundInterest` | `P, r, n, t` | `number` | A = P(1 + r/n)^(nt) |
+| `calculateSimpleInterest` | `P, r, t` | `number` | I = Prt |
+| `calculateTotalCost` | `principal, payment, term` | `number` | Total payment amount |
+| `calculateLoanPayoffDate` | `date, P, r, payment` | `string` | ISO date when loan is paid off |
+| `calculateAPR` | `loan, payment, term` | `number` | APR from payment schedule (Newton's method) |
+| `calculateTip` | `amount, percent, split` | `object` | `{tip, total, perPerson}` |
+| `calculateSalesTax` | `amount, rate` | `number` | Tax amount from rate |
+| `calculateDiscount` | `price, discount, type` | `object` | `{finalPrice, savings, discountAmount}` |
+| `calculateROI` | `gain, cost` | `number` | ROI percentage |
+| `calculateDepreciation` | `cost, salvage, life` | `number` | Annual straight-line depreciation |
+| `calculateAmortization` | `P, r, t` | `array` | Monthly payment schedule array |
+
+### Date/Time (`date-utils.js` — 12 functions)
+
+| Function | Input | Returns | Description |
+|---|---|---|---|
+| `isPastDate` | `string` | `boolean` | Date is before today |
+| `isFutureDate` | `string` | `boolean` | Date is after today |
+| `isWeekend` | `string` | `boolean` | Saturday or Sunday |
+| `isBusinessDay` | `string` | `boolean` | Not weekend, not US holiday |
+| `addDays` | `string, number` | `string` | Add N days to date |
+| `addMonths` | `string, number` | `string` | Add N months to date |
+| `daysBetween` | `string, string` | `number` | Calendar days between dates |
+| `businessDaysBetween` | `string, string` | `number` | Business days (excl. weekends + holidays) |
+| `getFirstDayOfMonth` | `string` | `string` | First day of month |
+| `getLastDayOfMonth` | `string` | `string` | Last day of month |
+| `formatDateRelative` | `string` | `string` | "3 days ago", "in 2 weeks" |
+| `calculateAge` | `string` | `number` | Age in years from birthdate |
+
+### String Utilities (`string-utils.js` — 10 functions)
+
+| Function | Input | Returns | Description |
+|---|---|---|---|
+| `slugify` | `string` | `string` | "Hello World!" -> "hello-world" |
+| `truncateText` | `string, number` | `string` | Truncate with "..." ellipsis |
+| `capitalize` | `string` | `string` | First letter uppercase |
+| `titleCase` | `string` | `string` | Each word capitalized |
+| `camelCase` | `string` | `string` | "hello world" -> "helloWorld" |
+| `snakeCase` | `string` | `string` | "hello world" -> "hello_world" |
+| `stripHTML` | `string` | `string` | Remove all HTML tags |
+| `countWords` | `string` | `number` | Word count |
+| `removeExtraWhitespace` | `string` | `string` | Collapse multiple spaces |
+| `extractNumbers` | `string` | `string` | Extract all numeric characters |
+
+### Data Utilities (`data-utils.js` — 8 functions)
+
+| Function | Input | Returns | Description |
+|---|---|---|---|
+| `toBase64` | `string` | `string` | Encode to Base64 |
+| `fromBase64` | `string` | `string` | Decode from Base64 |
+| `generateUUID` | none | `string` | UUID v4 |
+| `generateRandomString` | `number` | `string` | Alphanumeric random |
+| `deepCloneObject` | `object` | `object` | Deep clone |
+| `flattenObject` | `object` | `object` | Dot-notation flattening |
+| `objectToQueryString` | `object` | `string` | Object to URL query string |
+| `queryStringToObject` | `string` | `object` | Query string to object |
+
+### Geolocation (`geolocation.js` — 5 functions)
+
+| Function | Input | Returns | Description |
+|---|---|---|---|
+| `fetchLocationByZip` | `string` | `Promise` | External API lookup (zippopotam.us) |
+| `lookupZipCodeBackend` | `string` | `Promise` | AEM servlet lookup |
+| `calculateDistance` | `lat1, lon1, lat2, lon2` | `number` | Haversine distance in miles |
+| `validateUSStateCode` | `string` | `boolean` | Valid state code |
+| `getStateName` | `string` | `string` | "CA" -> "California" |
+
+### File Utilities (`file-utils.js` — 5 functions)
+
+| Function | Input | Returns | Description |
+|---|---|---|---|
+| `validateFileType` | `string, string` | `boolean` | File extension against allowed list |
+| `getFileExtension` | `string` | `string` | Extract extension |
+| `formatFileSize` | `number` | `string` | Bytes to "1.5 MB" |
+| `isImageFile` | `string` | `boolean` | Check if image type |
+| `isPDFFile` | `string` | `boolean` | Check if PDF |
+
+---
+
+## Project Structure
+
+```
+aem-forms-rules-editor/
+  core/                                  # Java OSGi bundle
+    src/main/java/.../
+      submit/
+        CustomRulesFormSubmitAction.java  # JSON/XML submit with validation
+        SaveToDAMSubmitAction.java        # Store attachments to DAM
+        SendEmailSubmitAction.java        # Email notification
+        AuditLogSubmitAction.java         # Structured audit trail
+      prefill/
+        CustomFormsPrefillService.java    # Backend repository prefill
+        UserProfilePrefillService.java    # User profile prefill
+      servlets/
+        ZipCodeLookupServlet.java         # ZIP code lookup
+        AddressValidationServlet.java     # US address validation
+        CurrencyConversionServlet.java    # Currency conversion
+        TaxCalculationServlet.java        # US state tax calculation
+    src/test/java/.../                    # Unit tests for all components
+  ui.apps/.../clientlib-custom-functions/
+    js.txt                                # Load order for all 8 category files
+    js/
+      custom-functions.js                 # Namespace initialization
+      validation.js                       # 25 validation functions
+      formatting.js                       # 15 formatting functions
+      financial.js                        # 12 financial calculations
+      date-utils.js                       # 12 date/time functions
+      string-utils.js                     # 10 string utilities
+      data-utils.js                       # 8 data transformation functions
+      geolocation.js                      # 5 geolocation functions
+      file-utils.js                       # 5 file utility functions
+  ui.content/                             # Themes, FDMs, templates
+  ui.frontend/                            # Webpack build
+```
+
+---
 
 ## Documentation
 
-The build process also generates documentation in the form of README.md files in each module directory for easy reference. Depending on the options you select at build time, the content may be customized to your project.
+- [AEM_FORMS_RULES_EDITOR.md](AEM_FORMS_RULES_EDITOR.md) — detailed architecture and API reference
+- Module-level READMEs in each subdirectory
 
-## Testing
+## License
 
-There are three levels of testing contained in the project:
-
-### Unit tests
-
-This show-cases classic unit testing of the code contained in the bundle. To
-test, execute:
-
-    mvn clean test
-
-### Integration tests
-
-This allows running integration tests that exercise the capabilities of AEM via
-HTTP calls to its API. To run the integration tests, run:
-
-    mvn clean verify -Plocal
-
-Test classes must be saved in the `src/main/java` directory (or any of its
-subdirectories), and must be contained in files matching the pattern `*IT.java`.
-
-The configuration provides sensible defaults for a typical local installation of
-AEM. If you want to point the integration tests to different AEM author and
-publish instances, you can use the following system properties via Maven's `-D`
-flag.
-
-| Property              | Description                                         | Default value           |
-|-----------------------|-----------------------------------------------------|-------------------------|
-| `it.author.url`       | URL of the author instance                          | `http://localhost:4502` |
-| `it.author.user`      | Admin user for the author instance                  | `admin`                 |
-| `it.author.password`  | Password of the admin user for the author instance  | `admin`                 |
-| `it.publish.url`      | URL of the publish instance                         | `http://localhost:4503` |
-| `it.publish.user`     | Admin user for the publish instance                 | `admin`                 |
-| `it.publish.password` | Password of the admin user for the publish instance | `admin`                 |
-
-The integration tests in this archetype use the [AEM Testing
-Clients](https://github.com/adobe/aem-testing-clients) and showcase some
-recommended [best
-practices](https://github.com/adobe/aem-testing-clients/wiki/Best-practices) to
-be put in use when writing integration tests for AEM.
-
-## Static Analysis
-
-The `analyse` module performs static analysis on the project for deploying into AEMaaCS. It is automatically
-run when executing
-
-    mvn clean install
-
-from the project root directory. Additional information about this analysis and how to further configure it
-can be found here https://github.com/adobe/aemanalyser-maven-plugin
-
-### UI tests
-
-They will test the UI layer of your AEM application using Cypress framework.
-
-Check README file in `ui.tests` module for more details.
-
-Examples of UI tests in different frameworks can be found here: https://github.com/adobe/aem-test-samples
-
-## ClientLibs
-
-The frontend module is made available using an [AEM ClientLib](https://helpx.adobe.com/experience-manager/6-5/sites/developing/using/clientlibs.html). When executing the NPM build script, the app is built and the [`aem-clientlib-generator`](https://github.com/wcm-io-frontend/aem-clientlib-generator) package takes the resulting build output and transforms it into such a ClientLib.
-
-A ClientLib will consist of the following files and directories:
-
-- `css/`: CSS files which can be requested in the HTML
-- `css.txt` (tells AEM the order and names of files in `css/` so they can be merged)
-- `js/`: JavaScript files which can be requested in the HTML
-- `js.txt` (tells AEM the order and names of files in `js/` so they can be merged
-- `resources/`: Source maps, non-entrypoint code chunks (resulting from code splitting), static assets (e.g. icons), etc.
-
-## Maven settings
-
-The project comes with the auto-public repository configured. To setup the repository in your Maven settings, refer to:
-
-    http://helpx.adobe.com/experience-manager/kb/SetUpTheAdobeMavenRepository.html
+See [LICENSE](LICENSE).

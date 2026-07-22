@@ -1,167 +1,314 @@
-# AEM Forms Rules Editor & Custom Integrations Guide
+# AEM Forms Rules Editor — Comprehensive Library Guide
 
-This repository contains a reference implementation for **AEM Forms Rules Editor** features, showcasing how to extend Adaptive Forms Core Components using client-side JavaScript Custom Functions and backend OSGi Custom Submit Actions.
+This repository is a **production-ready, comprehensive rules library** for AEM Forms Adaptive Forms (AFv2) Core Components. It provides **90+ client-side JavaScript functions** across 8 categories, **6 server-side OSGi Submit Actions**, **6 backend proxy Servlets**, and **2 Prefill Services** — all designed for the AEM Forms Rules Editor.
 
 ---
 
 ## Architecture Overview
-
-AEM Forms Adaptive Forms (AFv2) based on Core Components allows form designers to visually build complex validation and calculation rules. As a developer, you can extend these rules through two main entry points:
-
-1. **Client-Side: Custom Functions** — Custom JavaScript functions registered via Client Libraries (`clientlibs`) and exposed to the Rules Editor UI using specific JSDoc annotations.
-2. **Server-Side: Custom Submit Actions** — OSGi services implementing the `FormSubmitActionService` interface that process forms data securely on submission.
 
 ```
                     ┌───────────────────────────────┐
                     │     AEM Forms Rules Editor    │
                     │      (Visual Rule Builder)     │
                     └───────────────┬───────────────┘
-                                    │ Parses JSDoc annotations
+                                    │ JSDoc annotations
                                     ▼
 ┌───────────────────────────────────┐       ┌───────────────────────────────────┐
-│     Client-Side Extensions        │       │      Server-Side Extensions       │
-│   (Custom JS Functions ClientLib) │       │   (Custom OSGi Submit Services)   │
-│   e.g., validateSSN(),            │       │   e.g., CustomRulesFormSubmit...  │
-│   calculateMonthlyPayment()       │       │                                   │
+│     Client-Side: 90+ Functions    │       │      Server-Side Extensions       │
+│   Organized in 8 category files   │       │                                   │
+│                                    │       │   • 4 Submit Actions              │
+│   • validation.js    (25 funcs)   │       │   • 6 Backend Servlets            │
+│   • formatting.js    (15 funcs)   │       │   • 2 Prefill Services            │
+│   • financial.js     (12 funcs)   │       │                                   │
+│   • date-utils.js    (12 funcs)   │       │                                   │
+│   • string-utils.js  (10 funcs)   │       │                                   │
+│   • data-utils.js     (8 funcs)   │       │                                   │
+│   • geolocation.js    (5 funcs)   │       │                                   │
+│   • file-utils.js     (5 funcs)   │       │                                   │
 └───────────────────────────────────┘       └───────────────────────────────────┘
 ```
 
 ---
 
-## 1. Client-Side: Custom Functions
+## 1. Client-Side JavaScript Functions
 
-Custom functions are exposed to the visual Rule Editor dropdowns by wrapping standard JavaScript inside a Client Library with JSDoc metadata.
+### Loading in an Adaptive Form
 
-### Client Library Location
-*   **Path:** `[ui.apps/src/main/content/jcr_root/apps/aem-forms-rules-editor/clientlibs/clientlib-custom-functions](file:///Users/sonamgandhi/narendra/docker-sandbox/aem-forms-rules-editor/ui.apps/src/main/content/jcr_root/apps/aem-forms-rules-editor/clientlibs/clientlib-custom-functions)`
-*   **Categories:** `aem-forms-rules-editor.customfunctions`
-*   **Properties:** `allowProxy = true`
+1. Open the form in the Authoring editor
+2. Select the **Adaptive Form Container** component
+3. Add `aem-forms-rules-editor.customfunctions` to the **Client Library Category** field
+4. All functions appear in the Rules Editor dropdown, categorized by JSDoc `@name`
 
-### Implementation
-The JavaScript implementation is located in:
-`[custom-functions.js](file:///Users/sonamgandhi/narendra/docker-sandbox/aem-forms-rules-editor/ui.apps/src/main/content/jcr_root/apps/aem-forms-rules-editor/clientlibs/clientlib-custom-functions/js/custom-functions.js)`
+### Category Files
 
-Here are the custom functions defined for the Rules Editor:
-
-#### A. Social Security Number (SSN) Validation
-Validates formatted inputs (`XXX-XX-XXXX`).
-```javascript
-/**
- * Validate if the input is a valid Social Security Number (SSN) in format XXX-XX-XXXX.
- * @name validateSSN
- * @function
- * @param {string} ssn The SSN string to validate.
- * @return {boolean} True if valid, false otherwise.
- */
-window.CustomFormRules.validateSSN = function (ssn) { ... }
+Functions are loaded via `js.txt`:
 ```
-
-#### B. Monthly Payment Calculator
-Performs loan calculations client-side based on loan principal, annual interest rate, and term.
-```javascript
-/**
- * Calculate the monthly payment for a loan/installment.
- * @name calculateMonthlyPayment
- * @function
- * @param {number} principal The principal loan amount.
- * @param {number} annualInterestRate The annual interest rate in percent.
- * @param {number} termMonths The term of the loan in months.
- * @return {number} The calculated monthly payment amount.
- */
-window.CustomFormRules.calculateMonthlyPayment = function (principal, annualInterestRate, termMonths) { ... }
-```
-
-#### C. Credit Card Masking
-Masks a 16-digit card number to display only the last 4 digits.
-```javascript
-/**
- * Mask a credit card number to show only the last 4 digits.
- * @name maskCreditCard
- * @function
- * @param {string} cardNumber The 16-digit credit card number.
- * @return {string} The masked credit card number (e.g. XXXX-XXXX-XXXX-1234).
- */
-window.CustomFormRules.maskCreditCard = function (cardNumber) { ... }
-```
-
-#### D. Past Date Validator
-Checks if a given date is in the past. Useful for birthdates or reservation dates.
-```javascript
-/**
- * Check if the given date is in the past.
- * @name isPastDate
- * @function
- * @param {string} dateString The ISO date string (YYYY-MM-DD).
- * @return {boolean} True if the date is in the past, false otherwise.
- */
-window.CustomFormRules.isPastDate = function (dateString) { ... }
-```
-
-#### E. Async ZIP Code lookup (External API Fetch)
-Asynchronously fetches location data using a public zip code endpoint.
-```javascript
-/**
- * Fetch City and State by ZIP Code asynchronously.
- * @name fetchLocationByZip
- * @function
- * @param {string} zipCode The 5-digit zip code.
- * @return {promise} Promise resolving to location string (e.g., "San Jose, CA") or error message.
- */
-window.CustomFormRules.fetchLocationByZip = function (zipCode) { ... }
-```
-
-### Loading in Adaptive Forms Container
-To make these functions available in your Adaptive Form:
-1. Open the form in the Authoring editor.
-2. Select the **Adaptive Form Container** component.
-3. Open the properties panel.
-4. Add `aem-forms-rules-editor.customfunctions` to the **Client Library Category** field.
-
----
-
-## 2. Server-Side: OSGi Custom Submit Action
-
-When standard submit actions (like submitting to REST endpoints, Mail, or Forms Portal) are not enough, you can write a Java OSGi service to handle submissions.
-
-### OSGi Service Location
-*   **Path:** `[CustomRulesFormSubmitAction.java](file:///Users/sonamgandhi/narendra/docker-sandbox/aem-forms-rules-editor/core/src/main/java/com/adobe/aem/forms/rules/core/submit/CustomRulesFormSubmitAction.java)`
-*   **Service Interface:** `com.adobe.aemds.guide.service.FormSubmitActionService`
-
-### Usage
-Once compiled and deployed, a submit action option named **"Custom Rules Editor Submit Action"** will be selectable in the form's submission settings. When the user submits the form, the `submit()` method is called:
-
-```java
-@Component(
-    service = FormSubmitActionService.class,
-    immediate = true
-)
-public class CustomRulesFormSubmitAction implements FormSubmitActionService {
-    @Override
-    public String getServiceName() {
-        return "Custom Rules Editor Submit Action";
-    }
-
-    @Override
-    public Map<String, Object> submit(FormSubmitInfo formSubmitInfo) {
-        String data = formSubmitInfo.getData();
-        // Parse and process form data (JSON/XML) securely
-        ...
-        Map<String, Object> result = new HashMap<>();
-        result.put("status", "success");
-        return result;
-    }
-}
+#base=js
+validation.js
+formatting.js
+financial.js
+date-utils.js
+string-utils.js
+data-utils.js
+geolocation.js
+file-utils.js
 ```
 
 ---
 
-## How to Build and Deploy
+### 1.1 Validation Functions (`validation.js` — 25 functions)
 
-To compile and package the application:
+#### US Identity Validators
+
+**`validateSSN(ssn)`** — US Social Security Number
+- Normalizes input (strips spaces/dashes)
+- Rejects area 000, 666, 900+
+- Rejects group 00, serial 0000
+
+**`validateEIN(ein)`** — US Employer Identification Number
+- Format: XX-XXXXXXX
+- Validates prefix ranges per IRS rules
+
+**`validateITIN(itin)`** — US Individual Taxpayer ID
+- Format: 9XX-XX-XXXX
+- Validates middle digit ranges (70-88, 90-92, 94-99)
+
+**`validateUSPassport(passport)`** — US passport number
+- 9 digits or 1 letter + 8 digits
+
+**`validateDriverLicense(dl)`** — Basic US driver's license
+- 6-14 alphanumeric characters
+
+#### US Contact Validators
+
+**`validateEmail(email)`** — Email format validation
+
+**`validateUSPhone(phone)`** — 10-digit US phone
+- Handles optional +1 country code
+- Rejects area codes below 200
+
+**`validateUSZip(zip)`** — 5-digit or ZIP+4
+
+**`validateUSState(state)`** — 2-letter state code
+- All 50 states + DC + territories
+
+#### Network Validators
+
+**`validateURL(url)`** — URL with http/https protocol
+
+**`validateIPv4(ip)`** — IPv4 (0-255 per octet)
+
+**`validateIPv6(ip)`** — Full and compressed notation
+
+**`validateMACAddress(mac)`** — XX:XX:XX:XX:XX:XX or XX-XX-XX-XX-XX-XX
+
+#### Format Validators
+
+**`validateCreditCardLuhn(cardNumber)`** — Luhn algorithm check
+
+**`validateStrongPassword(password)`** — 8+ chars, upper, lower, digit, special
+
+**`validateJSON(jsonStr)`** — Valid JSON
+
+**`validateRegexPattern(value, pattern)`** — Generic regex match
+
+#### International Validators
+
+**`validateUKPostCode(postcode)`** — SW1A 1AA format
+
+**`validateUKPhone(phone)`** — +44 and 0 prefix formats
+
+**`validateCanadianSIN(sin)`** — Luhn algorithm check
+
+**`validateCanadianPostalCode(postalCode)`** — A1A 1A1 format
+
+**`validateIBAN(iban)`** — Mod-97 checksum validation
+
+**`validateEUPhone(phone)`** — 7-15 digits
+
+**`validateAustralianPhone(phone)`** — Australian format
+
+**`validateAustralianPostCode(postcode)`** — 4-digit (200-9999)
+
+---
+
+### 1.2 Formatting Functions (`formatting.js` — 15 functions)
+
+**`formatPhoneNumber(phone)`** — `(XXX) XXX-XXXX`
+**`formatPhoneNumberInternational(phone, countryCode)`** — E.164 format
+**`formatSSN(ssn, mask)`** — Display or mask (***)SS-SSSS
+**`formatCreditCard(cardNumber)`** — Spaces every 4 digits
+**`maskCreditCard(cardNumber)`** — Last 4 digits visible
+**`formatCurrency(amount, symbol)`** — $1,234.56
+**`formatDate(dateString, pattern)`** — MM/DD/YYYY, DD/MM/YYYY, Month DD, YYYY, etc.
+**`formatDateISO(dateString)`** — Always YYYY-MM-DD
+**`formatNameTitleCase(text)`** — "john doe" -> "John Doe"
+**`formatNameUpperCase(text)`** — "john doe" -> "JOHN DOE"
+**`formatZipCodePlus4(zip)`** — XXXXX-XXXX
+**`formatCanadianSIN(sin)`** — XXX-XXX-XXX
+**`formatIBAN(iban)`** — Spaces every 4 chars
+**`formatNumberWithCommas(num)`** — 1,000,000.00
+**`formatDecimalPlaces(num, places)`** — N decimal places
+
+---
+
+### 1.3 Financial Functions (`financial.js` — 12 functions)
+
+**`calculateMonthlyPayment(principal, annualRate, termMonths)`** — Amortization formula
+**`calculateCompoundInterest(P, r, n, t)`** — A = P(1 + r/n)^(nt)
+**`calculateSimpleInterest(P, r, t)`** — I = Prt
+**`calculateTotalCost(principal, payment, term)`** — Total payment
+**`calculateLoanPayoffDate(startDate, P, r, payment)`** — ISO payoff date
+**`calculateAPR(loan, payment, term)`** — Newton's method APR calculation
+**`calculateTip(amount, percent, split)`** — `{tip, total, perPerson}`
+**`calculateSalesTax(amount, rate)`** — Tax amount
+**`calculateDiscount(price, discount, type)`** — `{finalPrice, savings, discountAmount}`
+**`calculateROI(gain, cost)`** — ROI percentage
+**`calculateDepreciation(cost, salvage, life)`** — Annual straight-line
+**`calculateAmortization(P, r, t)`** — Full monthly schedule array
+
+---
+
+### 1.4 Date/Time Functions (`date-utils.js` — 12 functions)
+
+**`isPastDate(dateString)`** / **`isFutureDate(dateString)`**
+**`isWeekend(dateString)`** / **`isBusinessDay(dateString)`**
+**`addDays(dateString, n)`** / **`addMonths(dateString, n)`**
+**`daysBetween(start, end)`** / **`businessDaysBetween(start, end)`**
+**`getFirstDayOfMonth(dateString)`** / **`getLastDayOfMonth(dateString)`**
+**`formatDateRelative(dateString)`** — "3 days ago", "in 2 weeks"
+**`calculateAge(birthDateString)`** — Age in years
+
+Business day calculations include US holidays (New Year's, Independence Day, Christmas, MLK Day, Presidents Day, Memorial Day, Labor Day, Thanksgiving).
+
+---
+
+### 1.5 String Utilities (`string-utils.js` — 10 functions)
+
+**`slugify(text)`** — URL-safe slug
+**`truncateText(text, max, suffix)`** — Truncate with ellipsis
+**`capitalize(text)`** / **`titleCase(text)`** / **`camelCase(text)`** / **`snakeCase(text)`**
+**`stripHTML(html)`** — Remove all tags
+**`countWords(text)`** — Word count
+**`removeExtraWhitespace(text)`** — Normalize spaces
+**`extractNumbers(text)`** — Extract digits
+
+---
+
+### 1.6 Data Utilities (`data-utils.js` — 8 functions)
+
+**`toBase64(text)`** / **`fromBase64(encoded)`**
+**`generateUUID()`** — UUID v4
+**`generateRandomString(length)`**
+**`deepCloneObject(obj)`** / **`flattenObject(obj)`**
+**`objectToQueryString(obj)`** / **`queryStringToObject(qs)`**
+
+---
+
+### 1.7 Geolocation (`geolocation.js` — 5 functions)
+
+**`fetchLocationByZip(zip)`** — External API (zippopotam.us)
+**`lookupZipCodeBackend(zip)`** — AEM servlet lookup
+**`calculateDistance(lat1, lon1, lat2, lon2)`** — Haversine miles
+**`validateUSStateCode(state)`** / **`getStateName(code)`** — Full state database
+
+---
+
+### 1.8 File Utilities (`file-utils.js` — 5 functions)
+
+**`validateFileType(fileName, allowed)`** — Extension against allowed list
+**`getFileExtension(fileName)`** — Extract extension
+**`formatFileSize(bytes)`** — "1.5 MB"
+**`isImageFile(fileName)`** / **`isPDFFile(fileName)`**
+
+---
+
+## 2. Server-Side Submit Actions
+
+### 2.1 CustomRulesFormSubmitAction
+- **Path:** `core/.../submit/CustomRulesFormSubmitAction.java`
+- JSON + XML parsing (AFv2 nested data support)
+- Server-side field validation (email, SSN, ZIP, credit card)
+- Dummy SSN detection, XXE prevention, reCAPTCHA stub
+- File attachment processing, Granite Workflow trigger
+- Log injection prevention
+
+### 2.2 SaveToDAMSubmitAction
+- **Path:** `core/.../submit/SaveToDAMSubmitAction.java`
+- Stores form file attachments to AEM DAM
+- Creates asset nodes with form metadata
+- Configurable DAM path
+
+### 2.3 SendEmailSubmitAction
+- **Path:** `core/.../submit/SendEmailSubmitAction.java`
+- Email notification on form submission
+- Uses AEM GenericMessage pattern
+
+### 2.4 AuditLogSubmitAction
+- **Path:** `core/.../submit/AuditLogSubmitAction.java`
+- Structured audit trail under `/content/audit/form-submissions`
+- Stores form path, timestamp, data preview, attachment count
+
+---
+
+## 3. Server-Side Servlets
+
+| Servlet | Endpoint | Features |
+|---|---|---|
+| `ZipCodeLookupServlet` | `/bin/rules-api/zip-lookup` | Mock DB, ZIP+4, validation |
+| `AddressValidationServlet` | `/bin/rules-api/validate-address` | State/ZIP range validation, standardization |
+| `CurrencyConversionServlet` | `/bin/rules-api/currency-convert` | 10 currencies (USD, EUR, GBP, JPY, CAD, AUD, CHF, CNY, INR, MXN) |
+| `TaxCalculationServlet` | `/bin/rules-api/calculate-tax` | 50 states + DC, combined state+local rates |
+
+---
+
+## 4. Server-Side Prefill Services
+
+**`CustomFormsPrefillService`** — Dynamic prefill from backend repositories
+**`UserProfilePrefillService`** — Prefill from Sling user profile (givenName, familyName, email, etc.)
+
+---
+
+## 5. Testing
+
+### Unit Tests
 ```bash
-# Compile and run unit tests
 mvn clean test
-
-# Build and deploy package to a local AEM author instance (port 4502)
-mvn clean install -PautoInstallSinglePackage
 ```
+
+| Test Class | Tests |
+|---|---|
+| `CustomRulesFormSubmitActionTest` | 12 tests: JSON, XML, AFv2, validation, XXE |
+| `SaveToDAMSubmitActionTest` | 3 tests: no attachments, empty, service name |
+| `SendEmailSubmitActionTest` | 4 tests: empty, null, success, service name |
+| `AuditLogSubmitActionTest` | 2 tests: service name, missing resolver |
+| `AddressValidationServletTest` | 4 tests: valid, missing fields, invalid state, invalid ZIP |
+| `CurrencyConversionServletTest` | 5 tests: USD-EUR, GBP-INR, missing, invalid, unsupported |
+| `TaxCalculationServletTest` | 5 tests: CA, TX, OR (no tax), missing, invalid state |
+| `CustomFormsPrefillServiceTest` | 3 tests: metadata, default user, custom user |
+| `UserProfilePrefillServiceTest` | 3 tests: metadata, default user, with extras |
+| `ZipCodeLookupServletTest` | 6 tests: 5-digit, ZIP+4, invalid, too short, not found, null |
+
+---
+
+## 6. Build & Deploy
+
+```bash
+# Full build + unit tests
+mvn clean install
+
+# Deploy to local AEM author
+mvn clean install -PautoInstallSinglePackage
+
+# Deploy to publish
+mvn clean install -PautoInstallSinglePackagePublish
+
+# Deploy bundle only
+mvn clean install -PautoInstallBundle
+```
+
+---
+
+## License
+
+See [LICENSE](LICENSE).
