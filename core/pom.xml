@@ -98,10 +98,17 @@ Import-Package: javax.annotation;version=0.0.0,com.adobe.cq.forms.core.component
 
 
         <!-- AEM Forms Dependencies -->
-             <dependency>
-         <groupId>com.adobe.aem</groupId>
-         <artifactId>aem-forms-sdk-api</artifactId>
-       </dependency>
+        <dependency>
+            <groupId>com.adobe.aem</groupId>
+            <artifactId>aem-forms-sdk-api</artifactId>
+        </dependency>
+        <!-- JavaMail for SendEmailSubmitAction -->
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.6.2</version>
+            <scope>provided</scope>
+        </dependency>
                       <!-- Testing -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>

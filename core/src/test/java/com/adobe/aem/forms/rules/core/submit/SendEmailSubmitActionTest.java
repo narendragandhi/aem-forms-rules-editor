@@ -7,6 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import javax.mail.MessagingException;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,7 +23,12 @@ class SendEmailSubmitActionTest {
 
     @BeforeEach
     void setUp() {
-        submitAction = new SendEmailSubmitAction();
+        submitAction = new SendEmailSubmitAction() {
+            @Override
+            protected void sendEmail(String subject, String body, String toAddress) throws MessagingException {
+                // No-op: skip real SMTP in tests
+            }
+        };
     }
 
     @Test

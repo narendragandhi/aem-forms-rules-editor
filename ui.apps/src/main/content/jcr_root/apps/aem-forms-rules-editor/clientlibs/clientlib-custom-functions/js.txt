@@ -13,3 +13,6 @@ xfa-instance.js
 xfa-layout.js
 xfa-formcalc.js
 xfa-acrobat.js
+correspondence.js
+document-of-record.js
+forms-portal.js
