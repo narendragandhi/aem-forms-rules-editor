@@ -1,44 +1,12 @@
 /**
  * Data transformation rules for AEM Forms Rules Editor.
- * Encoding, UUID generation, and object manipulation utilities.
+ * UUID generation, object manipulation, and query string utilities.
  */
 
 (function (window) {
     "use strict";
 
     window.CustomFormRules = window.CustomFormRules || {};
-
-    /**
-     * Encode a string to Base64.
-     * @name toBase64
-     * @function
-     * @param {string} text The plain text string.
-     * @return {string} Base64 encoded string.
-     */
-    window.CustomFormRules.toBase64 = function (text) {
-        if (!text) return "";
-        try {
-            return btoa(unescape(encodeURIComponent(text)));
-        } catch (e) {
-            return "";
-        }
-    };
-
-    /**
-     * Decode a Base64 string.
-     * @name fromBase64
-     * @function
-     * @param {string} encoded The Base64 encoded string.
-     * @return {string} Decoded plain text.
-     */
-    window.CustomFormRules.fromBase64 = function (encoded) {
-        if (!encoded) return "";
-        try {
-            return decodeURIComponent(escape(atob(encoded)));
-        } catch (e) {
-            return "";
-        }
-    };
 
     /**
      * Generate a UUID v4.
@@ -69,22 +37,6 @@
             result += chars.charAt(Math.floor(Math.random() * chars.length));
         }
         return result;
-    };
-
-    /**
-     * Deep clone a plain object or array.
-     * @name deepCloneObject
-     * @function
-     * @param {object} obj The object to clone.
-     * @return {object} Deep clone of the object.
-     */
-    window.CustomFormRules.deepCloneObject = function (obj) {
-        if (obj === null || typeof obj !== "object") return obj;
-        try {
-            return JSON.parse(JSON.stringify(obj));
-        } catch (e) {
-            return obj;
-        }
     };
 
     /**

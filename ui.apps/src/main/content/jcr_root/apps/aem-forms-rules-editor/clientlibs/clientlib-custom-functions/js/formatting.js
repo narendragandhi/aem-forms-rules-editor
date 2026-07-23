@@ -8,10 +8,6 @@
 
     window.CustomFormRules = window.CustomFormRules || {};
 
-    // ============================================================================
-    // PHONE FORMATTING
-    // ============================================================================
-
     /**
      * Format US phone number to (XXX) XXX-XXXX.
      * @name formatPhoneNumber
@@ -45,10 +41,6 @@
         return "+" + cc + digits;
     };
 
-    // ============================================================================
-    // SSN FORMATTING
-    // ============================================================================
-
     /**
      * Format or mask SSN.
      * @name formatSSN
@@ -64,10 +56,6 @@
         if (mask) return "***-**-" + digits.substring(5);
         return digits.substring(0, 3) + "-" + digits.substring(3, 5) + "-" + digits.substring(5);
     };
-
-    // ============================================================================
-    // CREDIT CARD FORMATTING
-    // ============================================================================
 
     /**
      * Format credit card with spaces every 4 digits.
@@ -104,10 +92,6 @@
         return Array(len - 3).join("X") + lastFour;
     };
 
-    // ============================================================================
-    // CURRENCY FORMATTING
-    // ============================================================================
-
     /**
      * Format number as currency string.
      * @name formatCurrency
@@ -124,13 +108,8 @@
         return (num < 0 ? "-" : "") + symbol + formatted;
     };
 
-    // ============================================================================
-    // DATE FORMATTING
-    // ============================================================================
-
     /**
      * Format ISO date string to specified pattern.
-     * Supported patterns: MM/DD/YYYY, DD/MM/YYYY, YYYY-MM-DD, DD-MM-YYYY, Month DD, YYYY.
      * @name formatDate
      * @function
      * @param {string} dateString The ISO date string (YYYY-MM-DD).
@@ -176,38 +155,6 @@
         return y + "-" + m + "-" + day;
     };
 
-    // ============================================================================
-    // NAME FORMATTING
-    // ============================================================================
-
-    /**
-     * Convert string to Title Case.
-     * @name formatNameTitleCase
-     * @function
-     * @param {string} text The input string.
-     * @return {string} Title cased string.
-     */
-    window.CustomFormRules.formatNameTitleCase = function (text) {
-        if (!text) return "";
-        return text.toLowerCase().replace(/\b\w/g, function (c) { return c.toUpperCase(); });
-    };
-
-    /**
-     * Convert string to UPPER CASE.
-     * @name formatNameUpperCase
-     * @function
-     * @param {string} text The input string.
-     * @return {string} Upper cased string.
-     */
-    window.CustomFormRules.formatNameUpperCase = function (text) {
-        if (!text) return "";
-        return text.toUpperCase();
-    };
-
-    // ============================================================================
-    // POSTAL CODE FORMATTING
-    // ============================================================================
-
     /**
      * Format US ZIP code with optional +4 suffix.
      * @name formatZipCodePlus4
@@ -224,41 +171,6 @@
     };
 
     /**
-     * Format Canadian SIN with dashes.
-     * @name formatCanadianSIN
-     * @function
-     * @param {string} sin The SIN string.
-     * @return {string} Formatted as XXX-XXX-XXX.
-     */
-    window.CustomFormRules.formatCanadianSIN = function (sin) {
-        if (!sin) return "";
-        var digits = sin.replace(/\D/g, "");
-        if (digits.length !== 9) return sin;
-        return digits.substring(0, 3) + "-" + digits.substring(3, 6) + "-" + digits.substring(6);
-    };
-
-    /**
-     * Format IBAN with spaces every 4 characters.
-     * @name formatIBAN
-     * @function
-     * @param {string} iban The IBAN string.
-     * @return {string} Formatted IBAN.
-     */
-    window.CustomFormRules.formatIBAN = function (iban) {
-        if (!iban) return "";
-        var cleaned = iban.replace(/\s/g, "").toUpperCase();
-        var parts = [];
-        for (var i = 0; i < cleaned.length; i += 4) {
-            parts.push(cleaned.substring(i, i + 4));
-        }
-        return parts.join(" ");
-    };
-
-    // ============================================================================
-    // NUMBER FORMATTING
-    // ============================================================================
-
-    /**
      * Format number with commas as thousand separators.
      * @name formatNumberWithCommas
      * @function
@@ -271,22 +183,6 @@
         var parts = n.toFixed(2).split(".");
         parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         return parts.join(".");
-    };
-
-    /**
-     * Round number to specified decimal places.
-     * @name formatDecimalPlaces
-     * @function
-     * @param {number} num The number to round.
-     * @param {number} places Number of decimal places.
-     * @return {string} Rounded number string.
-     */
-    window.CustomFormRules.formatDecimalPlaces = function (num, places) {
-        var n = Number(num);
-        if (isNaN(n)) return "0";
-        var p = Number(places);
-        if (isNaN(p) || p < 0) p = 2;
-        return n.toFixed(p);
     };
 
 })(window);

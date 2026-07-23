@@ -9,13 +9,13 @@
     window.CustomFormRules = window.CustomFormRules || {};
 
     // ============================================================================
-    // US HOLIDAYS (basic set for business day calculations)
+    // US HOLIDAYS
     // ============================================================================
     var US_HOLIDAYS = [
         { month: 0, day: 1 },    // New Year's Day
-        { month: 6, day: 4 },    // Independence Day (observed)
+        { month: 6, day: 4 },    // Independence Day
         { month: 11, day: 25 },  // Christmas Day
-        { month: 11, day: 31 }   // New Year's Eve (optional)
+        { month: 11, day: 31 }   // New Year's Eve
     ];
 
     function isUSHoliday(date) {
@@ -24,17 +24,14 @@
         for (var i = 0; i < US_HOLIDAYS.length; i++) {
             if (US_HOLIDAYS[i].month === m && US_HOLIDAYS[i].day === d) return true;
         }
-        // Approximate: MLK (3rd Mon Jan), Presidents (3rd Mon Feb), Memorial (last Mon May),
-        // Labor (1st Mon Sep), Thanksgiving (4th Thu Nov)
         var y = date.getFullYear();
         var dayOfWeek = date.getDay();
         var dayOfMonth = date.getDate();
 
-        if (m === 0 && dayOfWeek === 1 && dayOfMonth >= 15 && dayOfMonth <= 21) return true; // MLK
-        if (m === 1 && dayOfWeek === 1 && dayOfMonth >= 15 && dayOfMonth <= 21) return true; // Presidents
-        if (m === 8 && dayOfWeek === 1 && dayOfMonth <= 7) return true; // Labor Day
-        if (m === 10 && dayOfWeek === 4 && dayOfMonth >= 22 && dayOfMonth <= 28) return true; // Thanksgiving
-        // Memorial Day: last Monday of May
+        if (m === 0 && dayOfWeek === 1 && dayOfMonth >= 15 && dayOfMonth <= 21) return true;
+        if (m === 1 && dayOfWeek === 1 && dayOfMonth >= 15 && dayOfMonth <= 21) return true;
+        if (m === 8 && dayOfWeek === 1 && dayOfMonth <= 7) return true;
+        if (m === 10 && dayOfWeek === 4 && dayOfMonth >= 22 && dayOfMonth <= 28) return true;
         if (m === 4 && dayOfWeek === 1) {
             var nextWeek = new Date(y, m, dayOfMonth + 7);
             if (nextWeek.getMonth() !== 4) return true;
@@ -87,20 +84,6 @@
         var today = new Date();
         today.setHours(0, 0, 0, 0);
         return d.getTime() > today.getTime();
-    };
-
-    /**
-     * Check if date falls on a weekend (Saturday or Sunday).
-     * @name isWeekend
-     * @function
-     * @param {string} dateString ISO date string (YYYY-MM-DD).
-     * @return {boolean} True if Saturday or Sunday.
-     */
-    window.CustomFormRules.isWeekend = function (dateString) {
-        var d = parseDate(dateString);
-        if (!d) return false;
-        var day = d.getDay();
-        return day === 0 || day === 6;
     };
 
     /**
@@ -210,21 +193,6 @@
     // ============================================================================
 
     /**
-     * Get the first day of the month for a given date.
-     * @name getFirstDayOfMonth
-     * @function
-     * @param {string} dateString ISO date string.
-     * @return {string} ISO date string of first day.
-     */
-    window.CustomFormRules.getFirstDayOfMonth = function (dateString) {
-        var d = parseDate(dateString);
-        if (!d) return "";
-        var y = d.getFullYear();
-        var m = ("0" + (d.getMonth() + 1)).slice(-2);
-        return y + "-" + m + "-01";
-    };
-
-    /**
      * Get the last day of the month for a given date.
      * @name getLastDayOfMonth
      * @function
@@ -292,19 +260,6 @@
         var monthDiff = today.getMonth() - d.getMonth();
         if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < d.getDate())) age--;
         return age;
-    };
-
-    /**
-     * Check if a year is a leap year.
-     * @name isLeapYear
-     * @function
-     * @param {number} year The year to check.
-     * @return {boolean} True if leap year.
-     */
-    window.CustomFormRules.isLeapYear = function (year) {
-        var y = Number(year);
-        if (isNaN(y)) return false;
-        return (y % 4 === 0 && y % 100 !== 0) || (y % 400 === 0);
     };
 
     /**

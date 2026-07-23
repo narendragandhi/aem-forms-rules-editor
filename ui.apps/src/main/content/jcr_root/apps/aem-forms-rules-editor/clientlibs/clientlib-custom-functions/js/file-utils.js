@@ -1,6 +1,6 @@
 /**
  * File utility rules for AEM Forms Rules Editor.
- * File type validation, extension extraction, and size formatting.
+ * File type validation and size formatting.
  */
 
 (function (window) {
@@ -9,16 +9,13 @@
     window.CustomFormRules = window.CustomFormRules || {};
 
     var IMAGE_EXTENSIONS = ["jpg", "jpeg", "png", "gif", "bmp", "webp", "svg", "tiff", "ico"];
-    var PDF_EXTENSIONS = ["pdf"];
-    var DOCUMENT_EXTENSIONS = ["doc", "docx", "xls", "xlsx", "ppt", "pptx", "txt", "csv", "rtf", "odt", "ods"];
-    var ARCHIVE_EXTENSIONS = ["zip", "rar", "7z", "tar", "gz"];
 
     /**
      * Validate file extension against an allowed list.
      * @name validateFileType
      * @function
      * @param {string} fileName The file name or path.
-     * @param {string} allowedExtensions Comma-separated list of allowed extensions (e.g., "pdf,doc,docx").
+     * @param {string} allowedExtensions Comma-separated list of allowed extensions.
      * @return {boolean} True if file extension is in the allowed list.
      */
     window.CustomFormRules.validateFileType = function (fileName, allowedExtensions) {
@@ -26,20 +23,6 @@
         var ext = fileName.split(".").pop().toLowerCase();
         var allowed = allowedExtensions.toLowerCase().split(",").map(function (s) { return s.trim(); });
         return allowed.indexOf(ext) !== -1;
-    };
-
-    /**
-     * Extract file extension from a file name.
-     * @name getFileExtension
-     * @function
-     * @param {string} fileName The file name or path.
-     * @return {string} The file extension (lowercase, without dot).
-     */
-    window.CustomFormRules.getFileExtension = function (fileName) {
-        if (!fileName) return "";
-        var parts = fileName.split(".");
-        if (parts.length < 2) return "";
-        return parts.pop().toLowerCase();
     };
 
     /**
