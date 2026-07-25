@@ -1,0 +1,72 @@
+{
+  "name": "aem-forms-rules-editor",
+  "displayName": "AEM Forms Rules Editor",
+  "description": "Autocomplete, hover docs, and signature help for 101 AEM Forms custom functions",
+  "version": "1.0.0",
+  "publisher": "narendragandhi",
+  "license": "MIT",
+  "icon": "images/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/narendragandhi/aem-forms-rules-editor"
+  },
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Snippets"
+  ],
+  "keywords": [
+    "aem",
+    "adobe",
+    "forms",
+    "rules",
+    "adaptive-forms",
+    "xfa",
+    "autocomplete",
+    "snippets"
+  ],
+  "activationEvents": [
+    "onLanguage:javascript",
+    "onLanguage:typescript"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "aem-forms-rules",
+        "aliases": [
+          "AEM Forms Rules",
+          "aem-forms-rules"
+        ],
+        "extensions": [
+          ".js"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": [
+          "javascript",
+          "aem-forms-rules"
+        ],
+        "path": "./snippets/aem-forms-rules.json"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src --ext ts",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.74.0",
+    "@types/node": "^18.0.0",
+    "typescript": "^5.3.0",
+    "@vscode/vsce": "^2.22.0"
+  }
+}
