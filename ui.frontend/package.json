@@ -4,11 +4,11 @@
   "description": "Generates an AEM Frontend project with Webpack",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/narendragandhi/aem-forms-rules-editor.git"
   },
   "private": true,
   "main": "src/main/webpack/site/main.ts",
-  "license": "SEE LICENSE IN LICENSE.txt",
+  "license": "Apache-2.0",
   "scripts": {
     "dev": "webpack --env dev --config ./webpack.dev.js && clientlib --verbose",
     "prod": "webpack --config ./webpack.prod.js && clientlib --verbose",

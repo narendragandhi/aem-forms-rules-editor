@@ -89,10 +89,12 @@ buildNumber.properties
 # NPM
 node_modules/
 yarn.lock
+*.vsix
 
 # Webpack
 build/
 dist/
+out/
 actions/common/
 
 # Frontend Maven Plugin

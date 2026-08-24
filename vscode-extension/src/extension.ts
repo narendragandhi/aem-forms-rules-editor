@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { AemFormsCompletionProvider } from './completion';
 import { AemFormsHoverProvider } from './hover';
 import { AemFormsSignatureProvider } from './signature';
+import { FUNCTIONS } from './functions';
 
 export function activate(context: vscode.ExtensionContext) {
     console.log('AEM Forms Rules Editor extension activating...');
@@ -34,7 +35,7 @@ export function activate(context: vscode.ExtensionContext) {
 
     context.subscriptions.push(completionProvider, hoverProvider, signatureProvider);
 
-    console.log('AEM Forms Rules Editor: 101 functions registered (completion, hover, signature)');
+    console.log(`AEM Forms Rules Editor: ${FUNCTIONS.length} functions registered (completion, hover, signature)`);
 }
 
 export function deactivate() {}

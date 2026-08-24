@@ -1,0 +1,1956 @@
+[
+  {
+    "name": "listLetterTemplates",
+    "namespace": "CustomFormRules.correspondence.listLetterTemplates",
+    "category": "Correspondence Management",
+    "source": "ui.apps/.../clientlib-custom-functions/js/correspondence.js",
+    "params": [],
+    "returns": "Promise<Array>",
+    "description": "List all available letter templates. Returns an array of template objects with id, name, category, and status. @name listLetterTemplates @function @returns {Promise<Array>} Array of letter template objects. @example var templates = CustomFormRules.correspondence.listLetterTemplates(); templates.then(function(tpls) { console.log('Available templates:', tpls.length); });",
+    "isAsync": true
+  },
+  {
+    "name": "getLetterTemplate",
+    "namespace": "CustomFormRules.correspondence.getLetterTemplate",
+    "category": "Correspondence Management",
+    "source": "ui.apps/.../clientlib-custom-functions/js/correspondence.js",
+    "params": [
+      {
+        "name": "templateId",
+        "type": "string",
+        "optional": false,
+        "description": "The template ID (e.g. 'LETTER-001')."
+      }
+    ],
+    "returns": "Promise<Object>",
+    "description": "Get a specific letter template by ID. @name getLetterTemplate @function @param {string} templateId - The template ID (e.g. 'LETTER-001'). @returns {Promise<Object>} Template object with id, name, category, bodyTemplate. @example var tpl = CustomFormRules.correspondence.getLetterTemplate('LETTER-001'); tpl.then(function(t) { console.log(t.name); });",
+    "isAsync": true
+  },
+  {
+    "name": "listDataDictionaries",
+    "namespace": "CustomFormRules.correspondence.listDataDictionaries",
+    "category": "Correspondence Management",
+    "source": "ui.apps/.../clientlib-custom-functions/js/correspondence.js",
+    "params": [],
+    "returns": "Promise<Array>",
+    "description": "List all available data dictionaries. Returns an array of dictionary names with entry counts. @name listDataDictionaries @function @returns {Promise<Array>} Array of dictionary info objects. @example var dicts = CustomFormRules.correspondence.listDataDictionaries(); dicts.then(function(d) { console.log(d); });",
+    "isAsync": true
+  },
+  {
+    "name": "lookupDataDictionary",
+    "namespace": "CustomFormRules.correspondence.lookupDataDictionary",
+    "category": "Correspondence Management",
+    "source": "ui.apps/.../clientlib-custom-functions/js/correspondence.js",
+    "params": [
+      {
+        "name": "dictionaryName",
+        "type": "string",
+        "optional": false,
+        "description": "The dictionary name (e.g. 'us-states', 'currencies')."
+      },
+      {
+        "name": "key",
+        "type": "string",
+        "optional": false,
+        "description": "Optional key to look up (e.g. 'CA')."
+      }
+    ],
+    "returns": "Promise<Object>",
+    "description": "Look up a value in a data dictionary. If key is provided, returns the single value. If omitted, returns all entries. @name lookupDataDictionary @function @param {string} dictionaryName - The dictionary name (e.g. 'us-states', 'currencies'). @param {string} [key] - Optional key to look up (e.g. 'CA'). @returns {Promise<Object>} Dictionary entries or a single key-value pair. @example var val = CustomFormRules.correspondence.lookupDataDictionary('us-states', 'CA'); val.then(function(v) { console.log(v.value); }); // 'California'",
+    "isAsync": true
+  },
+  {
+    "name": "generateCorrespondence",
+    "namespace": "CustomFormRules.correspondence.generateCorrespondence",
+    "category": "Correspondence Management",
+    "source": "ui.apps/.../clientlib-custom-functions/js/correspondence.js",
+    "params": [
+      {
+        "name": "templateId",
+        "type": "string",
+        "optional": false,
+        "description": "The template ID to use."
+      },
+      {
+        "name": "recipientId",
+        "type": "string",
+        "optional": false,
+        "description": "Optional recipient identifier."
+      }
+    ],
+    "returns": "Promise<Object>",
+    "description": "Generate a correspondence from a letter template. Creates a new correspondence record and adds it to the recipient's history. @name generateCorrespondence @function @param {string} templateId - The template ID to use. @param {string} [recipientId] - Optional recipient identifier. @returns {Promise<Object>} Generated correspondence object with correspondenceId. @example var corr = CustomFormRules.correspondence.generateCorrespondence('LETTER-001', 'CUST-12345'); corr.then(function(c) { console.log('Generated:', c.correspondenceId); });",
+    "isAsync": true
+  },
+  {
+    "name": "previewCorrespondence",
+    "namespace": "CustomFormRules.correspondence.previewCorrespondence",
+    "category": "Correspondence Management",
+    "source": "ui.apps/.../clientlib-custom-functions/js/correspondence.js",
+    "params": [
+      {
+        "name": "templateId",
+        "type": "string",
+        "optional": false,
+        "description": "The template ID to preview."
+      }
+    ],
+    "returns": "Promise<Object>",
+    "description": "Preview a letter template with placeholder data. Returns the template content with a preview indicator. @name previewCorrespondence @function @param {string} templateId - The template ID to preview. @returns {Promise<Object>} Template preview object. @example var preview = CustomFormRules.correspondence.previewCorrespondence('LETTER-003'); preview.then(function(p) { console.log(p.bodyTemplate); });",
+    "isAsync": true
+  },
+  {
+    "name": "getCorrespondenceHistory",
+    "namespace": "CustomFormRules.correspondence.getCorrespondenceHistory",
+    "category": "Correspondence Management",
+    "source": "ui.apps/.../clientlib-custom-functions/js/correspondence.js",
+    "params": [
+      {
+        "name": "recipientId",
+        "type": "string",
+        "optional": false,
+        "description": "The recipient identifier."
+      }
+    ],
+    "returns": "Promise<Object>",
+    "description": "Get correspondence history for a specific recipient. @name getCorrespondenceHistory @function @param {string} recipientId - The recipient identifier. @returns {Promise<Object>} History object with array of correspondence records. @example var hist = CustomFormRules.correspondence.getCorrespondenceHistory('CUST-12345'); hist.then(function(h) { console.log('Total sent:', h.total); });",
+    "isAsync": true
+  },
+  {
+    "name": "resolveTemplate",
+    "namespace": "CustomFormRules.correspondence.resolveTemplate",
+    "category": "Correspondence Management",
+    "source": "ui.apps/.../clientlib-custom-functions/js/correspondence.js",
+    "params": [
+      {
+        "name": "templateString",
+        "type": "string",
+        "optional": false,
+        "description": "Template with {{key}} placeholders."
+      },
+      {
+        "name": "data",
+        "type": "Object",
+        "optional": false,
+        "description": "Key-value pairs for substitution."
+      }
+    ],
+    "returns": "string",
+    "description": "Resolve template placeholders with actual data values. Replaces {{key}} placeholders in a template string with values from a data object. @name resolveTemplate @function @param {string} templateString - Template with {{key}} placeholders. @param {Object} data - Key-value pairs for substitution. @returns {string} Resolved string with placeholders replaced. @example var resolved = CustomFormRules.correspondence.resolveTemplate( 'Hello {{firstName}}, your balance is ${{balance}}.', { firstName: 'John', balance: '1250.00' } ); // Returns: 'Hello John, your balance is $1250.00.'",
+    "isAsync": true
+  },
+  {
+    "name": "batchGenerateCorrespondence",
+    "namespace": "CustomFormRules.correspondence.batchGenerateCorrespondence",
+    "category": "Correspondence Management",
+    "source": "ui.apps/.../clientlib-custom-functions/js/correspondence.js",
+    "params": [
+      {
+        "name": "templateId",
+        "type": "string",
+        "optional": false,
+        "description": "The template ID to use for all."
+      },
+      {
+        "name": "recipientIds",
+        "type": "Array<string>",
+        "optional": false,
+        "description": "Array of recipient identifiers."
+      }
+    ],
+    "returns": "Promise<Array>",
+    "description": "Batch generate correspondences for multiple recipients. Generates a correspondence for each recipient using the same template. @name batchGenerateCorrespondence @function @param {string} templateId - The template ID to use for all. @param {Array<string>} recipientIds - Array of recipient identifiers. @returns {Promise<Array>} Array of generated correspondence objects. @example var batch = CustomFormRules.correspondence.batchGenerateCorrespondence( 'LETTER-001', ['CUST-001', 'CUST-002', 'CUST-003'] ); batch.then(function(results) { console.log('Generated:', results.length); });",
+    "isAsync": true
+  },
+  {
+    "name": "getTemplateCategories",
+    "namespace": "CustomFormRules.correspondence.getTemplateCategories",
+    "category": "Correspondence Management",
+    "source": "ui.apps/.../clientlib-custom-functions/js/correspondence.js",
+    "params": [],
+    "returns": "Promise<Array<string>>",
+    "description": "Get template categories. Returns a deduplicated list of categories from all available templates. @name getTemplateCategories @function @returns {Promise<Array<string>>} Array of unique category strings. @example var cats = CustomFormRules.correspondence.getTemplateCategories(); cats.then(function(c) { console.log(c); }); // ['customer-onboarding', 'financial', ...]",
+    "isAsync": false
+  },
+  {
+    "name": "generateUUID",
+    "namespace": "CustomFormRules.generateUUID",
+    "category": "Data",
+    "source": "ui.apps/.../clientlib-custom-functions/js/data-utils.js",
+    "params": [],
+    "returns": "string",
+    "description": "Generate a UUID v4. @name generateUUID @function @return {string} A UUID v4 string.",
+    "isAsync": false
+  },
+  {
+    "name": "generateRandomString",
+    "namespace": "CustomFormRules.generateRandomString",
+    "category": "Data",
+    "source": "ui.apps/.../clientlib-custom-functions/js/data-utils.js",
+    "params": [
+      {
+        "name": "length",
+        "type": "number",
+        "optional": false,
+        "description": "The desired string length."
+      }
+    ],
+    "returns": "string",
+    "description": "Generate a random alphanumeric string of specified length. @name generateRandomString @function @param {number} length The desired string length. @return {string} Random alphanumeric string.",
+    "isAsync": false
+  },
+  {
+    "name": "flattenObject",
+    "namespace": "CustomFormRules.flattenObject",
+    "category": "Data",
+    "source": "ui.apps/.../clientlib-custom-functions/js/data-utils.js",
+    "params": [
+      {
+        "name": "obj",
+        "type": "object",
+        "optional": false,
+        "description": "The nested object."
+      },
+      {
+        "name": "prefix",
+        "type": "string",
+        "optional": false,
+        "description": "The prefix for keys (internal use)."
+      }
+    ],
+    "returns": "object",
+    "description": "Flatten a nested object into dot-notation keys. @name flattenObject @function @param {object} obj The nested object. @param {string} prefix The prefix for keys (internal use). @return {object} Flattened object.",
+    "isAsync": false
+  },
+  {
+    "name": "objectToQueryString",
+    "namespace": "CustomFormRules.objectToQueryString",
+    "category": "Data",
+    "source": "ui.apps/.../clientlib-custom-functions/js/data-utils.js",
+    "params": [
+      {
+        "name": "obj",
+        "type": "object",
+        "optional": false,
+        "description": "The object to convert."
+      }
+    ],
+    "returns": "string",
+    "description": "Convert an object to a URL query string. @name objectToQueryString @function @param {object} obj The object to convert. @return {string} URL query string (without leading ?).",
+    "isAsync": false
+  },
+  {
+    "name": "queryStringToObject",
+    "namespace": "CustomFormRules.queryStringToObject",
+    "category": "Data",
+    "source": "ui.apps/.../clientlib-custom-functions/js/data-utils.js",
+    "params": [
+      {
+        "name": "queryString",
+        "type": "string",
+        "optional": false,
+        "description": "The query string (with or without leading ?)."
+      }
+    ],
+    "returns": "object",
+    "description": "Parse a URL query string into an object. @name queryStringToObject @function @param {string} queryString The query string (with or without leading ?). @return {object} Parsed object.",
+    "isAsync": false
+  },
+  {
+    "name": "isPastDate",
+    "namespace": "CustomFormRules.isPastDate",
+    "category": "Date/Time",
+    "source": "ui.apps/.../clientlib-custom-functions/js/date-utils.js",
+    "params": [
+      {
+        "name": "dateString",
+        "type": "string",
+        "optional": false,
+        "description": "ISO date string (YYYY-MM-DD)."
+      }
+    ],
+    "returns": "boolean",
+    "description": "Check if date is in the past. @name isPastDate @function @param {string} dateString ISO date string (YYYY-MM-DD). @return {boolean} True if date is before today.",
+    "isAsync": false
+  },
+  {
+    "name": "isFutureDate",
+    "namespace": "CustomFormRules.isFutureDate",
+    "category": "Date/Time",
+    "source": "ui.apps/.../clientlib-custom-functions/js/date-utils.js",
+    "params": [
+      {
+        "name": "dateString",
+        "type": "string",
+        "optional": false,
+        "description": "ISO date string (YYYY-MM-DD)."
+      }
+    ],
+    "returns": "boolean",
+    "description": "Check if date is in the future. @name isFutureDate @function @param {string} dateString ISO date string (YYYY-MM-DD). @return {boolean} True if date is after today.",
+    "isAsync": false
+  },
+  {
+    "name": "isBusinessDay",
+    "namespace": "CustomFormRules.isBusinessDay",
+    "category": "Date/Time",
+    "source": "ui.apps/.../clientlib-custom-functions/js/date-utils.js",
+    "params": [
+      {
+        "name": "dateString",
+        "type": "string",
+        "optional": false,
+        "description": "ISO date string (YYYY-MM-DD)."
+      }
+    ],
+    "returns": "boolean",
+    "description": "Check if date is a business day (not weekend, not US holiday). @name isBusinessDay @function @param {string} dateString ISO date string (YYYY-MM-DD). @return {boolean} True if business day.",
+    "isAsync": false
+  },
+  {
+    "name": "addDays",
+    "namespace": "CustomFormRules.addDays",
+    "category": "Date/Time",
+    "source": "ui.apps/.../clientlib-custom-functions/js/date-utils.js",
+    "params": [
+      {
+        "name": "dateString",
+        "type": "string",
+        "optional": false,
+        "description": "ISO date string (YYYY-MM-DD)."
+      },
+      {
+        "name": "days",
+        "type": "number",
+        "optional": false,
+        "description": "Number of days to add (negative to subtract)."
+      }
+    ],
+    "returns": "string",
+    "description": "Add days to a date. @name addDays @function @param {string} dateString ISO date string (YYYY-MM-DD). @param {number} days Number of days to add (negative to subtract). @return {string} New ISO date string.",
+    "isAsync": false
+  },
+  {
+    "name": "addMonths",
+    "namespace": "CustomFormRules.addMonths",
+    "category": "Date/Time",
+    "source": "ui.apps/.../clientlib-custom-functions/js/date-utils.js",
+    "params": [
+      {
+        "name": "dateString",
+        "type": "string",
+        "optional": false,
+        "description": "ISO date string (YYYY-MM-DD)."
+      },
+      {
+        "name": "months",
+        "type": "number",
+        "optional": false,
+        "description": "Number of months to add."
+      }
+    ],
+    "returns": "string",
+    "description": "Add months to a date. @name addMonths @function @param {string} dateString ISO date string (YYYY-MM-DD). @param {number} months Number of months to add. @return {string} New ISO date string.",
+    "isAsync": false
+  },
+  {
+    "name": "daysBetween",
+    "namespace": "CustomFormRules.daysBetween",
+    "category": "Date/Time",
+    "source": "ui.apps/.../clientlib-custom-functions/js/date-utils.js",
+    "params": [
+      {
+        "name": "startDate",
+        "type": "string",
+        "optional": false,
+        "description": "ISO date string."
+      },
+      {
+        "name": "endDate",
+        "type": "string",
+        "optional": false,
+        "description": "ISO date string."
+      }
+    ],
+    "returns": "number",
+    "description": "Calculate calendar days between two dates. @name daysBetween @function @param {string} startDate ISO date string. @param {string} endDate ISO date string. @return {number} Number of days (negative if end < start).",
+    "isAsync": false
+  },
+  {
+    "name": "businessDaysBetween",
+    "namespace": "CustomFormRules.businessDaysBetween",
+    "category": "Date/Time",
+    "source": "ui.apps/.../clientlib-custom-functions/js/date-utils.js",
+    "params": [
+      {
+        "name": "startDate",
+        "type": "string",
+        "optional": false,
+        "description": "ISO date string."
+      },
+      {
+        "name": "endDate",
+        "type": "string",
+        "optional": false,
+        "description": "ISO date string."
+      }
+    ],
+    "returns": "number",
+    "description": "Calculate business days between two dates (excludes weekends and US holidays). @name businessDaysBetween @function @param {string} startDate ISO date string. @param {string} endDate ISO date string. @return {number} Number of business days.",
+    "isAsync": false
+  },
+  {
+    "name": "getLastDayOfMonth",
+    "namespace": "CustomFormRules.getLastDayOfMonth",
+    "category": "Date/Time",
+    "source": "ui.apps/.../clientlib-custom-functions/js/date-utils.js",
+    "params": [
+      {
+        "name": "dateString",
+        "type": "string",
+        "optional": false,
+        "description": "ISO date string."
+      }
+    ],
+    "returns": "string",
+    "description": "Get the last day of the month for a given date. @name getLastDayOfMonth @function @param {string} dateString ISO date string. @return {string} ISO date string of last day.",
+    "isAsync": false
+  },
+  {
+    "name": "formatDateRelative",
+    "namespace": "CustomFormRules.formatDateRelative",
+    "category": "Date/Time",
+    "source": "ui.apps/.../clientlib-custom-functions/js/date-utils.js",
+    "params": [
+      {
+        "name": "dateString",
+        "type": "string",
+        "optional": false,
+        "description": "ISO date string."
+      }
+    ],
+    "returns": "string",
+    "description": "Format date as relative time string. @name formatDateRelative @function @param {string} dateString ISO date string. @return {string} Relative string like \"3 days ago\" or \"in 2 weeks\".",
+    "isAsync": false
+  },
+  {
+    "name": "calculateAge",
+    "namespace": "CustomFormRules.calculateAge",
+    "category": "Date/Time",
+    "source": "ui.apps/.../clientlib-custom-functions/js/date-utils.js",
+    "params": [
+      {
+        "name": "birthDateString",
+        "type": "string",
+        "optional": false,
+        "description": "ISO date string (YYYY-MM-DD)."
+      }
+    ],
+    "returns": "number",
+    "description": "Calculate age in years from a birthdate. @name calculateAge @function @param {string} birthDateString ISO date string (YYYY-MM-DD). @return {number} Age in years, or -1 if invalid.",
+    "isAsync": false
+  },
+  {
+    "name": "isDateInRange",
+    "namespace": "CustomFormRules.isDateInRange",
+    "category": "Date/Time",
+    "source": "ui.apps/.../clientlib-custom-functions/js/date-utils.js",
+    "params": [
+      {
+        "name": "dateString",
+        "type": "string",
+        "optional": false,
+        "description": "The date to check (YYYY-MM-DD)."
+      },
+      {
+        "name": "rangeStart",
+        "type": "string",
+        "optional": false,
+        "description": "The range start date (YYYY-MM-DD)."
+      },
+      {
+        "name": "rangeEnd",
+        "type": "string",
+        "optional": false,
+        "description": "The range end date (YYYY-MM-DD)."
+      }
+    ],
+    "returns": "boolean",
+    "description": "Check if a date falls within a range. @name isDateInRange @function @param {string} dateString The date to check (YYYY-MM-DD). @param {string} rangeStart The range start date (YYYY-MM-DD). @param {string} rangeEnd The range end date (YYYY-MM-DD). @return {boolean} True if date is within range (inclusive).",
+    "isAsync": false
+  },
+  {
+    "name": "listDoRTemplates",
+    "namespace": "CustomFormRules.documentOfRecord.listDoRTemplates",
+    "category": "Document of Record",
+    "source": "ui.apps/.../clientlib-custom-functions/js/document-of-record.js",
+    "params": [],
+    "returns": "Promise<Array>",
+    "description": "List all available Document of Record templates. @name listDoRTemplates @function @returns {Promise<Array>} Array of DoR template objects. @example var templates = CustomFormRules.documentOfRecord.listDoRTemplates(); templates.then(function(tpls) { console.log(tpls.length); });",
+    "isAsync": true
+  },
+  {
+    "name": "getDoRTemplate",
+    "namespace": "CustomFormRules.documentOfRecord.getDoRTemplate",
+    "category": "Document of Record",
+    "source": "ui.apps/.../clientlib-custom-functions/js/document-of-record.js",
+    "params": [
+      {
+        "name": "templateId",
+        "type": "string",
+        "optional": false,
+        "description": "The template ID (e.g. 'DOR-STD-001')."
+      }
+    ],
+    "returns": "Promise<Object>",
+    "description": "Get a specific DoR template by ID. @name getDoRTemplate @function @param {string} templateId - The template ID (e.g. 'DOR-STD-001'). @returns {Promise<Object>} Template object. @example var tpl = CustomFormRules.documentOfRecord.getDoRTemplate('DOR-STD-001'); tpl.then(function(t) { console.log(t.name); });",
+    "isAsync": true
+  },
+  {
+    "name": "generateDoR",
+    "namespace": "CustomFormRules.documentOfRecord.generateDoR",
+    "category": "Document of Record",
+    "source": "ui.apps/.../clientlib-custom-functions/js/document-of-record.js",
+    "params": [
+      {
+        "name": "templateId",
+        "type": "string",
+        "optional": false,
+        "description": "The DoR template ID to use."
+      },
+      {
+        "name": "formPath",
+        "type": "string",
+        "optional": false,
+        "description": "The AEM form container path."
+      },
+      {
+        "name": "submissionId",
+        "type": "string",
+        "optional": false,
+        "description": "Optional submission identifier."
+      }
+    ],
+    "returns": "Promise<Object>",
+    "description": "Generate a Document of Record from a form submission. Creates a PDF snapshot of the form data for archival. @name generateDoR @function @param {string} templateId - The DoR template ID to use. @param {string} formPath - The AEM form container path. @param {string} [submissionId] - Optional submission identifier. @returns {Promise<Object>} Generated DoR object with dorId and pdfUrl. @example var dor = CustomFormRules.documentOfRecord.generateDoR( 'DOR-STD-001', '/content/forms/af/my-form', 'SUB-12345' ); dor.then(function(d) { console.log('PDF:', d.pdfUrl); });",
+    "isAsync": true
+  },
+  {
+    "name": "getDoR",
+    "namespace": "CustomFormRules.documentOfRecord.getDoR",
+    "category": "Document of Record",
+    "source": "ui.apps/.../clientlib-custom-functions/js/document-of-record.js",
+    "params": [
+      {
+        "name": "dorId",
+        "type": "string",
+        "optional": false,
+        "description": "The DoR identifier."
+      }
+    ],
+    "returns": "Promise<Object>",
+    "description": "Retrieve an existing Document of Record by ID. @name getDoR @function @param {string} dorId - The DoR identifier. @returns {Promise<Object>} DoR object with metadata and pdfUrl. @example var dor = CustomFormRules.documentOfRecord.getDoR('DOR-1234567890'); dor.then(function(d) { console.log(d.status); });",
+    "isAsync": true
+  },
+  {
+    "name": "listDoRs",
+    "namespace": "CustomFormRules.documentOfRecord.listDoRs",
+    "category": "Document of Record",
+    "source": "ui.apps/.../clientlib-custom-functions/js/document-of-record.js",
+    "params": [
+      {
+        "name": "formPath",
+        "type": "string",
+        "optional": false,
+        "description": "Optional form path to filter by."
+      }
+    ],
+    "returns": "Promise<Object>",
+    "description": "List all generated Documents of Record, optionally filtered by form path. @name listDoRs @function @param {string} [formPath] - Optional form path to filter by. @returns {Promise<Object>} Object with 'documents' array and 'total' count. @example var allDors = CustomFormRules.documentOfRecord.listDoRs(); allDors.then(function(d) { console.log(d.total); });",
+    "isAsync": true
+  },
+  {
+    "name": "regenerateDoR",
+    "namespace": "CustomFormRules.documentOfRecord.regenerateDoR",
+    "category": "Document of Record",
+    "source": "ui.apps/.../clientlib-custom-functions/js/document-of-record.js",
+    "params": [
+      {
+        "name": "dorId",
+        "type": "string",
+        "optional": false,
+        "description": "The DoR identifier to regenerate."
+      }
+    ],
+    "returns": "Promise<Object>",
+    "description": "Regenerate an existing Document of Record. Creates a new version while preserving the original dorId. @name regenerateDoR @function @param {string} dorId - The DoR identifier to regenerate. @returns {Promise<Object>} Updated DoR object with regenerationId. @example var updated = CustomFormRules.documentOfRecord.regenerateDoR('DOR-1234567890'); updated.then(function(d) { console.log(d.lastUpdated); });",
+    "isAsync": true
+  },
+  {
+    "name": "getDoRStatus",
+    "namespace": "CustomFormRules.documentOfRecord.getDoRStatus",
+    "category": "Document of Record",
+    "source": "ui.apps/.../clientlib-custom-functions/js/document-of-record.js",
+    "params": [
+      {
+        "name": "dorId",
+        "type": "string",
+        "optional": false,
+        "description": "The DoR identifier."
+      }
+    ],
+    "returns": "Promise<Object>",
+    "description": "Check the processing status of a Document of Record. @name getDoRStatus @function @param {string} dorId - The DoR identifier. @returns {Promise<Object>} Status object with status and lastUpdated. @example var status = CustomFormRules.documentOfRecord.getDoRStatus('DOR-1234567890'); status.then(function(s) { console.log(s.status); }); // 'generated'",
+    "isAsync": true
+  },
+  {
+    "name": "autoSelectTemplate",
+    "namespace": "CustomFormRules.documentOfRecord.autoSelectTemplate",
+    "category": "Document of Record",
+    "source": "ui.apps/.../clientlib-custom-functions/js/document-of-record.js",
+    "params": [
+      {
+        "name": "formPath",
+        "type": "string",
+        "optional": false,
+        "description": "The AEM form container path."
+      }
+    ],
+    "returns": "Promise<string>",
+    "description": "Auto-select the best DoR template for a given form path. Returns the compliance template if the form path contains regulatory keywords, the executive template for summary forms, or the standard template otherwise. @name autoSelectTemplate @function @param {string} formPath - The AEM form container path. @returns {Promise<string>} The selected template ID. @example var templateId = CustomFormRules.documentOfRecord.autoSelectTemplate('/content/forms/af/tax-form'); templateId.then(function(id) { console.log(id); }); // 'DOR-STD-004' (compliance)",
+    "isAsync": true
+  },
+  {
+    "name": "autoGenerateDoR",
+    "namespace": "CustomFormRules.documentOfRecord.autoGenerateDoR",
+    "category": "Document of Record",
+    "source": "ui.apps/.../clientlib-custom-functions/js/document-of-record.js",
+    "params": [
+      {
+        "name": "formPath",
+        "type": "string",
+        "optional": false,
+        "description": "The AEM form container path."
+      },
+      {
+        "name": "submissionId",
+        "type": "string",
+        "optional": false,
+        "description": "Optional submission identifier."
+      }
+    ],
+    "returns": "Promise<Object>",
+    "description": "Generate a DoR using the auto-selected template for a form path. Convenience function combining autoSelectTemplate and generateDoR. @name autoGenerateDoR @function @param {string} formPath - The AEM form container path. @param {string} [submissionId] - Optional submission identifier. @returns {Promise<Object>} Generated DoR object. @example var dor = CustomFormRules.documentOfRecord.autoGenerateDoR('/content/forms/af/loan-app'); dor.then(function(d) { console.log('PDF ready:', d.pdfUrl); });",
+    "isAsync": false
+  },
+  {
+    "name": "validateFileType",
+    "namespace": "CustomFormRules.validateFileType",
+    "category": "Files",
+    "source": "ui.apps/.../clientlib-custom-functions/js/file-utils.js",
+    "params": [
+      {
+        "name": "fileName",
+        "type": "string",
+        "optional": false,
+        "description": "The file name or path."
+      },
+      {
+        "name": "allowedExtensions",
+        "type": "string",
+        "optional": false,
+        "description": "Comma-separated list of allowed extensions."
+      }
+    ],
+    "returns": "boolean",
+    "description": "Validate file extension against an allowed list. @name validateFileType @function @param {string} fileName The file name or path. @param {string} allowedExtensions Comma-separated list of allowed extensions. @return {boolean} True if file extension is in the allowed list.",
+    "isAsync": false
+  },
+  {
+    "name": "formatFileSize",
+    "namespace": "CustomFormRules.formatFileSize",
+    "category": "Files",
+    "source": "ui.apps/.../clientlib-custom-functions/js/file-utils.js",
+    "params": [
+      {
+        "name": "bytes",
+        "type": "number",
+        "optional": false,
+        "description": "The file size in bytes."
+      }
+    ],
+    "returns": "string",
+    "description": "Format file size in bytes to human-readable string. @name formatFileSize @function @param {number} bytes The file size in bytes. @return {string} Human-readable size (e.g., \"1.5 MB\").",
+    "isAsync": false
+  },
+  {
+    "name": "isImageFile",
+    "namespace": "CustomFormRules.isImageFile",
+    "category": "Files",
+    "source": "ui.apps/.../clientlib-custom-functions/js/file-utils.js",
+    "params": [
+      {
+        "name": "fileName",
+        "type": "string",
+        "optional": false,
+        "description": "The file name."
+      }
+    ],
+    "returns": "boolean",
+    "description": "Check if a file is an image based on its extension. @name isImageFile @function @param {string} fileName The file name. @return {boolean} True if the file is an image type.",
+    "isAsync": false
+  },
+  {
+    "name": "isPDFFile",
+    "namespace": "CustomFormRules.isPDFFile",
+    "category": "Files",
+    "source": "ui.apps/.../clientlib-custom-functions/js/file-utils.js",
+    "params": [
+      {
+        "name": "fileName",
+        "type": "string",
+        "optional": false,
+        "description": "The file name."
+      }
+    ],
+    "returns": "boolean",
+    "description": "Check if a file is a PDF. @name isPDFFile @function @param {string} fileName The file name. @return {boolean} True if the file is a PDF.",
+    "isAsync": false
+  },
+  {
+    "name": "calculateMonthlyPayment",
+    "namespace": "CustomFormRules.calculateMonthlyPayment",
+    "category": "Financial",
+    "source": "ui.apps/.../clientlib-custom-functions/js/financial.js",
+    "params": [
+      {
+        "name": "principal",
+        "type": "number",
+        "optional": false,
+        "description": "The principal loan amount."
+      },
+      {
+        "name": "annualInterestRate",
+        "type": "number",
+        "optional": false,
+        "description": "The annual interest rate in percent."
+      },
+      {
+        "name": "termMonths",
+        "type": "number",
+        "optional": false,
+        "description": "The term of the loan in months."
+      }
+    ],
+    "returns": "number",
+    "description": "Calculate monthly loan payment (amortization formula). @name calculateMonthlyPayment @function @param {number} principal The principal loan amount. @param {number} annualInterestRate The annual interest rate in percent. @param {number} termMonths The term of the loan in months. @return {number} Monthly payment amount.",
+    "isAsync": false
+  },
+  {
+    "name": "calculateCompoundInterest",
+    "namespace": "CustomFormRules.calculateCompoundInterest",
+    "category": "Financial",
+    "source": "ui.apps/.../clientlib-custom-functions/js/financial.js",
+    "params": [
+      {
+        "name": "principal",
+        "type": "number",
+        "optional": false,
+        "description": "The initial principal."
+      },
+      {
+        "name": "annualRate",
+        "type": "number",
+        "optional": false,
+        "description": "Annual interest rate in percent."
+      },
+      {
+        "name": "compoundsPerYear",
+        "type": "number",
+        "optional": false,
+        "description": "Times interest compounds per year."
+      },
+      {
+        "name": "years",
+        "type": "number",
+        "optional": false,
+        "description": "Number of years."
+      }
+    ],
+    "returns": "number",
+    "description": "Calculate compound interest: A = P(1 + r/n)^(nt). @name calculateCompoundInterest @function @param {number} principal The initial principal. @param {number} annualRate Annual interest rate in percent. @param {number} compoundsPerYear Times interest compounds per year. @param {number} years Number of years. @return {number} Total amount after interest.",
+    "isAsync": false
+  },
+  {
+    "name": "calculateSimpleInterest",
+    "namespace": "CustomFormRules.calculateSimpleInterest",
+    "category": "Financial",
+    "source": "ui.apps/.../clientlib-custom-functions/js/financial.js",
+    "params": [
+      {
+        "name": "principal",
+        "type": "number",
+        "optional": false,
+        "description": "The principal amount."
+      },
+      {
+        "name": "annualRate",
+        "type": "number",
+        "optional": false,
+        "description": "Annual interest rate in percent."
+      },
+      {
+        "name": "years",
+        "type": "number",
+        "optional": false,
+        "description": "Number of years."
+      }
+    ],
+    "returns": "number",
+    "description": "Calculate simple interest: I = P * r * t. @name calculateSimpleInterest @function @param {number} principal The principal amount. @param {number} annualRate Annual interest rate in percent. @param {number} years Number of years. @return {number} Interest earned.",
+    "isAsync": false
+  },
+  {
+    "name": "calculateLoanPayoffDate",
+    "namespace": "CustomFormRules.calculateLoanPayoffDate",
+    "category": "Financial",
+    "source": "ui.apps/.../clientlib-custom-functions/js/financial.js",
+    "params": [
+      {
+        "name": "startDate",
+        "type": "string",
+        "optional": false,
+        "description": "The start date (YYYY-MM-DD)."
+      },
+      {
+        "name": "principal",
+        "type": "number",
+        "optional": false,
+        "description": "The principal loan amount."
+      },
+      {
+        "name": "annualRate",
+        "type": "number",
+        "optional": false,
+        "description": "Annual interest rate in percent."
+      },
+      {
+        "name": "monthlyPayment",
+        "type": "number",
+        "optional": false,
+        "description": "The monthly payment amount."
+      }
+    ],
+    "returns": "string",
+    "description": "Calculate loan payoff date from start date, principal, rate, and payment. @name calculateLoanPayoffDate @function @param {string} startDate The start date (YYYY-MM-DD). @param {number} principal The principal loan amount. @param {number} annualRate Annual interest rate in percent. @param {number} monthlyPayment The monthly payment amount. @return {string} Payoff date (YYYY-MM-DD), or \"N/A\" if payment won't cover interest.",
+    "isAsync": false
+  },
+  {
+    "name": "calculateAPR",
+    "namespace": "CustomFormRules.calculateAPR",
+    "category": "Financial",
+    "source": "ui.apps/.../clientlib-custom-functions/js/financial.js",
+    "params": [
+      {
+        "name": "loanAmount",
+        "type": "number",
+        "optional": false,
+        "description": "The loan amount."
+      },
+      {
+        "name": "monthlyPayment",
+        "type": "number",
+        "optional": false,
+        "description": "The monthly payment."
+      },
+      {
+        "name": "termMonths",
+        "type": "number",
+        "optional": false,
+        "description": "The term in months."
+      }
+    ],
+    "returns": "number",
+    "description": "Calculate APR from loan details using Newton's method / bisection. @name calculateAPR @function @param {number} loanAmount The loan amount. @param {number} monthlyPayment The monthly payment. @param {number} termMonths The term in months. @return {number} APR in percent.",
+    "isAsync": false
+  },
+  {
+    "name": "calculateTip",
+    "namespace": "CustomFormRules.calculateTip",
+    "category": "Financial",
+    "source": "ui.apps/.../clientlib-custom-functions/js/financial.js",
+    "params": [
+      {
+        "name": "amount",
+        "type": "number",
+        "optional": false,
+        "description": "The bill amount."
+      },
+      {
+        "name": "tipPercent",
+        "type": "number",
+        "optional": false,
+        "description": "The tip percentage (e.g., 20 for 20%)."
+      },
+      {
+        "name": "splitAmong",
+        "type": "number",
+        "optional": false,
+        "description": "Number of people to split (optional, default 1)."
+      }
+    ],
+    "returns": "object",
+    "description": "Calculate tip amount and total with optional split. @name calculateTip @function @param {number} amount The bill amount. @param {number} tipPercent The tip percentage (e.g., 20 for 20%). @param {number} splitAmong Number of people to split (optional, default 1). @return {object} {tip, total, perPerson}",
+    "isAsync": false
+  },
+  {
+    "name": "calculateDiscount",
+    "namespace": "CustomFormRules.calculateDiscount",
+    "category": "Financial",
+    "source": "ui.apps/.../clientlib-custom-functions/js/financial.js",
+    "params": [
+      {
+        "name": "price",
+        "type": "number",
+        "optional": false,
+        "description": "The original price."
+      },
+      {
+        "name": "discount",
+        "type": "number",
+        "optional": false,
+        "description": "The discount value."
+      },
+      {
+        "name": "type",
+        "type": "string",
+        "optional": false,
+        "description": "\"percent\" or \"fixed\" (default \"percent\")."
+      }
+    ],
+    "returns": "object",
+    "description": "Calculate discount (percentage or fixed amount). @name calculateDiscount @function @param {number} price The original price. @param {number} discount The discount value. @param {string} type \"percent\" or \"fixed\" (default \"percent\"). @return {object} {finalPrice, savings, discountAmount}",
+    "isAsync": false
+  },
+  {
+    "name": "calculateAmortization",
+    "namespace": "CustomFormRules.calculateAmortization",
+    "category": "Financial",
+    "source": "ui.apps/.../clientlib-custom-functions/js/financial.js",
+    "params": [
+      {
+        "name": "principal",
+        "type": "number",
+        "optional": false,
+        "description": "The loan principal."
+      },
+      {
+        "name": "annualRate",
+        "type": "number",
+        "optional": false,
+        "description": "Annual interest rate in percent."
+      },
+      {
+        "name": "termMonths",
+        "type": "number",
+        "optional": false,
+        "description": "The term in months."
+      }
+    ],
+    "returns": "array",
+    "description": "Generate simplified amortization schedule. @name calculateAmortization @function @param {number} principal The loan principal. @param {number} annualRate Annual interest rate in percent. @param {number} termMonths The term in months. @return {array} Array of {month, payment, principal, interest, balance} objects.",
+    "isAsync": false
+  },
+  {
+    "name": "formatPhoneNumber",
+    "namespace": "CustomFormRules.formatPhoneNumber",
+    "category": "Formatting",
+    "source": "ui.apps/.../clientlib-custom-functions/js/formatting.js",
+    "params": [
+      {
+        "name": "phone",
+        "type": "string",
+        "optional": false,
+        "description": "The raw phone number string."
+      }
+    ],
+    "returns": "string",
+    "description": "Format US phone number to (XXX) XXX-XXXX. @name formatPhoneNumber @function @param {string} phone The raw phone number string. @return {string} Formatted phone number.",
+    "isAsync": false
+  },
+  {
+    "name": "formatPhoneNumberInternational",
+    "namespace": "CustomFormRules.formatPhoneNumberInternational",
+    "category": "Formatting",
+    "source": "ui.apps/.../clientlib-custom-functions/js/formatting.js",
+    "params": [
+      {
+        "name": "phone",
+        "type": "string",
+        "optional": false,
+        "description": "The phone number string."
+      },
+      {
+        "name": "countryCode",
+        "type": "string",
+        "optional": false,
+        "description": "The default country code without + (default \"1\" for US)."
+      }
+    ],
+    "returns": "string",
+    "description": "Format phone number to E.164 international format (+XXXXXXXXXXX). @name formatPhoneNumberInternational @function @param {string} phone The phone number string. @param {string} countryCode The default country code without + (default \"1\" for US). @return {string} E.164 formatted phone number.",
+    "isAsync": false
+  },
+  {
+    "name": "formatSSN",
+    "namespace": "CustomFormRules.formatSSN",
+    "category": "Formatting",
+    "source": "ui.apps/.../clientlib-custom-functions/js/formatting.js",
+    "params": [
+      {
+        "name": "ssn",
+        "type": "string",
+        "optional": false,
+        "description": "The SSN string."
+      },
+      {
+        "name": "mask",
+        "type": "boolean",
+        "optional": false,
+        "description": "If true, shows only last 4 digits."
+      }
+    ],
+    "returns": "string",
+    "description": "Format or mask SSN. @name formatSSN @function @param {string} ssn The SSN string. @param {boolean} mask If true, shows only last 4 digits. @return {string} Formatted SSN.",
+    "isAsync": false
+  },
+  {
+    "name": "formatCreditCard",
+    "namespace": "CustomFormRules.formatCreditCard",
+    "category": "Formatting",
+    "source": "ui.apps/.../clientlib-custom-functions/js/formatting.js",
+    "params": [
+      {
+        "name": "cardNumber",
+        "type": "string",
+        "optional": false,
+        "description": "The credit card number."
+      }
+    ],
+    "returns": "string",
+    "description": "Format credit card with spaces every 4 digits. @name formatCreditCard @function @param {string} cardNumber The credit card number. @return {string} Formatted card number.",
+    "isAsync": false
+  },
+  {
+    "name": "maskCreditCard",
+    "namespace": "CustomFormRules.maskCreditCard",
+    "category": "Formatting",
+    "source": "ui.apps/.../clientlib-custom-functions/js/formatting.js",
+    "params": [
+      {
+        "name": "cardNumber",
+        "type": "string",
+        "optional": false,
+        "description": "The credit card number."
+      }
+    ],
+    "returns": "string",
+    "description": "Mask credit card to show only last 4 digits. @name maskCreditCard @function @param {string} cardNumber The credit card number. @return {string} Masked card number.",
+    "isAsync": false
+  },
+  {
+    "name": "formatCurrency",
+    "namespace": "CustomFormRules.formatCurrency",
+    "category": "Formatting",
+    "source": "ui.apps/.../clientlib-custom-functions/js/formatting.js",
+    "params": [
+      {
+        "name": "amount",
+        "type": "number",
+        "optional": false,
+        "description": "The numeric amount."
+      },
+      {
+        "name": "currencyCode",
+        "type": "string",
+        "optional": false,
+        "description": "The currency symbol or code (default \"$\")."
+      }
+    ],
+    "returns": "string",
+    "description": "Format number as currency string. @name formatCurrency @function @param {number} amount The numeric amount. @param {string} currencyCode The currency symbol or code (default \"$\"). @return {string} Formatted currency string.",
+    "isAsync": false
+  },
+  {
+    "name": "formatDate",
+    "namespace": "CustomFormRules.formatDate",
+    "category": "Formatting",
+    "source": "ui.apps/.../clientlib-custom-functions/js/formatting.js",
+    "params": [
+      {
+        "name": "dateString",
+        "type": "string",
+        "optional": false,
+        "description": "The ISO date string (YYYY-MM-DD)."
+      },
+      {
+        "name": "pattern",
+        "type": "string",
+        "optional": false,
+        "description": "The output pattern."
+      }
+    ],
+    "returns": "string",
+    "description": "Format ISO date string to specified pattern. @name formatDate @function @param {string} dateString The ISO date string (YYYY-MM-DD). @param {string} pattern The output pattern. @return {string} Formatted date string.",
+    "isAsync": false
+  },
+  {
+    "name": "formatDateISO",
+    "namespace": "CustomFormRules.formatDateISO",
+    "category": "Formatting",
+    "source": "ui.apps/.../clientlib-custom-functions/js/formatting.js",
+    "params": [
+      {
+        "name": "dateString",
+        "type": "string",
+        "optional": false,
+        "description": "Any date string parseable by Date()."
+      }
+    ],
+    "returns": "string",
+    "description": "Format date to ISO 8601 (YYYY-MM-DD). @name formatDateISO @function @param {string} dateString Any date string parseable by Date(). @return {string} ISO formatted date.",
+    "isAsync": false
+  },
+  {
+    "name": "formatZipCodePlus4",
+    "namespace": "CustomFormRules.formatZipCodePlus4",
+    "category": "Formatting",
+    "source": "ui.apps/.../clientlib-custom-functions/js/formatting.js",
+    "params": [
+      {
+        "name": "zip",
+        "type": "string",
+        "optional": false,
+        "description": "The ZIP code (5 or 9 digits)."
+      }
+    ],
+    "returns": "string",
+    "description": "Format US ZIP code with optional +4 suffix. @name formatZipCodePlus4 @function @param {string} zip The ZIP code (5 or 9 digits). @return {string} Formatted as XXXXX-XXXX.",
+    "isAsync": false
+  },
+  {
+    "name": "formatNumberWithCommas",
+    "namespace": "CustomFormRules.formatNumberWithCommas",
+    "category": "Formatting",
+    "source": "ui.apps/.../clientlib-custom-functions/js/formatting.js",
+    "params": [
+      {
+        "name": "num",
+        "type": "number",
+        "optional": false,
+        "description": "The number to format."
+      }
+    ],
+    "returns": "string",
+    "description": "Format number with commas as thousand separators. @name formatNumberWithCommas @function @param {number} num The number to format. @return {string} Formatted number string.",
+    "isAsync": false
+  },
+  {
+    "name": "listForms",
+    "namespace": "CustomFormRules.formsPortal.listForms",
+    "category": "Forms Portal",
+    "source": "ui.apps/.../clientlib-custom-functions/js/forms-portal.js",
+    "params": [
+      {
+        "name": "filters",
+        "type": "Object",
+        "optional": false,
+        "description": "Optional filters."
+      }
+    ],
+    "returns": "Promise<Array>",
+    "description": "List all available forms from the Forms Portal. Supports optional filtering by category and status. @name listForms @function @param {Object} [filters] - Optional filters. @param {string} [filters.category] - Filter by category (e.g. 'financial', 'hr'). @param {string} [filters.status] - Filter by status (e.g. 'active', 'inactive'). @returns {Promise<Array>} Array of form objects. @example var forms = CustomFormRules.formsPortal.listForms({ category: 'financial' }); forms.then(function(f) { console.log(f.length + ' forms found'); });",
+    "isAsync": true
+  },
+  {
+    "name": "getFormMetadata",
+    "namespace": "CustomFormRules.formsPortal.getFormMetadata",
+    "category": "Forms Portal",
+    "source": "ui.apps/.../clientlib-custom-functions/js/forms-portal.js",
+    "params": [
+      {
+        "name": "formPath",
+        "type": "string",
+        "optional": false,
+        "description": "The AEM form container path."
+      }
+    ],
+    "returns": "Promise<Object>",
+    "description": "Get metadata for a specific form. Returns title, description, status, category, and configuration. @name getFormMetadata @function @param {string} formPath - The AEM form container path. @returns {Promise<Object>} Form metadata object. @example var meta = CustomFormRules.formsPortal.getFormMetadata('/content/forms/af/loan-application'); meta.then(function(m) { console.log(m.title); });",
+    "isAsync": true
+  },
+  {
+    "name": "saveDraft",
+    "namespace": "CustomFormRules.formsPortal.saveDraft",
+    "category": "Forms Portal",
+    "source": "ui.apps/.../clientlib-custom-functions/js/forms-portal.js",
+    "params": [
+      {
+        "name": "formPath",
+        "type": "string",
+        "optional": false,
+        "description": "The AEM form container path."
+      },
+      {
+        "name": "userId",
+        "type": "string",
+        "optional": false,
+        "description": "The user identifier."
+      },
+      {
+        "name": "data",
+        "type": "string",
+        "optional": false,
+        "description": "The form data to save (JSON string)."
+      }
+    ],
+    "returns": "Promise<Object>",
+    "description": "Save a form draft for a specific user. Persists the current form data so the user can resume later. @name saveDraft @function @param {string} formPath - The AEM form container path. @param {string} userId - The user identifier. @param {string} data - The form data to save (JSON string). @returns {Promise<Object>} Saved draft object with savedDate. @example var draft = CustomFormRules.formsPortal.saveDraft( '/content/forms/af/loan-application', 'user123', '{\"name\":\"John\"}' ); draft.then(function(d) { console.log('Saved:', d.savedDate); });",
+    "isAsync": true
+  },
+  {
+    "name": "getDraft",
+    "namespace": "CustomFormRules.formsPortal.getDraft",
+    "category": "Forms Portal",
+    "source": "ui.apps/.../clientlib-custom-functions/js/forms-portal.js",
+    "params": [
+      {
+        "name": "formPath",
+        "type": "string",
+        "optional": false,
+        "description": "The AEM form container path."
+      },
+      {
+        "name": "userId",
+        "type": "string",
+        "optional": false,
+        "description": "The user identifier."
+      }
+    ],
+    "returns": "Promise<Object>",
+    "description": "Retrieve a saved form draft. @name getDraft @function @param {string} formPath - The AEM form container path. @param {string} userId - The user identifier. @returns {Promise<Object>} Draft object with saved data. @example var draft = CustomFormRules.formsPortal.getDraft('/content/forms/af/loan-application', 'user123'); draft.then(function(d) { console.log(d.data); });",
+    "isAsync": true
+  },
+  {
+    "name": "listDrafts",
+    "namespace": "CustomFormRules.formsPortal.listDrafts",
+    "category": "Forms Portal",
+    "source": "ui.apps/.../clientlib-custom-functions/js/forms-portal.js",
+    "params": [
+      {
+        "name": "userId",
+        "type": "string",
+        "optional": false,
+        "description": "The user identifier."
+      }
+    ],
+    "returns": "Promise<Array>",
+    "description": "List all drafts for a specific user across all forms. @name listDrafts @function @param {string} userId - The user identifier. @returns {Promise<Array>} Array of draft objects. @example var drafts = CustomFormRules.formsPortal.listDrafts('user123'); drafts.then(function(d) { console.log(d.length + ' drafts'); });",
+    "isAsync": true
+  },
+  {
+    "name": "deleteDraft",
+    "namespace": "CustomFormRules.formsPortal.deleteDraft",
+    "category": "Forms Portal",
+    "source": "ui.apps/.../clientlib-custom-functions/js/forms-portal.js",
+    "params": [
+      {
+        "name": "formPath",
+        "type": "string",
+        "optional": false,
+        "description": "The AEM form container path."
+      },
+      {
+        "name": "userId",
+        "type": "string",
+        "optional": false,
+        "description": "The user identifier."
+      }
+    ],
+    "returns": "Promise<Object>",
+    "description": "Delete a saved form draft. @name deleteDraft @function @param {string} formPath - The AEM form container path. @param {string} userId - The user identifier. @returns {Promise<Object>} Deletion confirmation. @example var result = CustomFormRules.formsPortal.deleteDraft('/content/forms/af/loan-application', 'user123'); result.then(function(r) { console.log(r.status); }); // 'deleted'",
+    "isAsync": true
+  },
+  {
+    "name": "getPrefillData",
+    "namespace": "CustomFormRules.formsPortal.getPrefillData",
+    "category": "Forms Portal",
+    "source": "ui.apps/.../clientlib-custom-functions/js/forms-portal.js",
+    "params": [
+      {
+        "name": "source",
+        "type": "string",
+        "optional": false,
+        "description": "The prefill source name (e.g. 'user-profile', 'customer-data')."
+      },
+      {
+        "name": "keys",
+        "type": "string|Array<string>",
+        "optional": false,
+        "description": "Optional specific keys to retrieve."
+      }
+    ],
+    "returns": "Promise<Object>",
+    "description": "Get prefill data from a named data source. Optionally filter to specific keys. @name getPrefillData @function @param {string} source - The prefill source name (e.g. 'user-profile', 'customer-data'). @param {string|Array<string>} [keys] - Optional specific keys to retrieve. @returns {Promise<Object>} Prefill data object. @example var data = CustomFormRules.formsPortal.getPrefillData('user-profile'); data.then(function(d) { console.log(d.data.firstName); }); // 'John' var filtered = CustomFormRules.formsPortal.getPrefillData('user-profile', ['email', 'phone']); filtered.then(function(d) { console.log(d.data); }); // { email: '...', phone: '...' }",
+    "isAsync": true
+  },
+  {
+    "name": "listPrefillSources",
+    "namespace": "CustomFormRules.formsPortal.listPrefillSources",
+    "category": "Forms Portal",
+    "source": "ui.apps/.../clientlib-custom-functions/js/forms-portal.js",
+    "params": [],
+    "returns": "Promise<Array>",
+    "description": "List all available prefill data sources. @name listPrefillSources @function @returns {Promise<Array>} Array of source info objects. @example var sources = CustomFormRules.formsPortal.listPrefillSources(); sources.then(function(s) { console.log(s.length + ' sources'); });",
+    "isAsync": true
+  },
+  {
+    "name": "getFormAnalytics",
+    "namespace": "CustomFormRules.formsPortal.getFormAnalytics",
+    "category": "Forms Portal",
+    "source": "ui.apps/.../clientlib-custom-functions/js/forms-portal.js",
+    "params": [
+      {
+        "name": "formPath",
+        "type": "string",
+        "optional": false,
+        "description": "Optional form path. If omitted, returns analytics for all forms."
+      }
+    ],
+    "returns": "Promise<Object>",
+    "description": "Get submission analytics for a specific form or all forms. @name getFormAnalytics @function @param {string} [formPath] - Optional form path. If omitted, returns analytics for all forms. @returns {Promise<Object>} Analytics object with submission counts and completion rates. @example var analytics = CustomFormRules.formsPortal.getFormAnalytics('/content/forms/af/loan-application'); analytics.then(function(a) { console.log(a.completionRate + '% completion'); });",
+    "isAsync": true
+  },
+  {
+    "name": "prefillsFormFromMultipleSources",
+    "namespace": "CustomFormRules.formsPortal.prefillsFormFromMultipleSources",
+    "category": "Forms Portal",
+    "source": "ui.apps/.../clientlib-custom-functions/js/forms-portal.js",
+    "params": [
+      {
+        "name": "sources",
+        "type": "Array<string>",
+        "optional": false,
+        "description": "Array of source names to merge."
+      }
+    ],
+    "returns": "Promise<Object>",
+    "description": "Prefill a form by combining data from multiple sources. Merges prefill data from user-profile, customer-data, and organization sources. @name prefillsFormFromMultipleSources @function @param {Array<string>} sources - Array of source names to merge. @returns {Promise<Object>} Merged prefill data object. @example var data = CustomFormRules.formsPortal.prefillsFormFromMultipleSources( ['user-profile', 'organization'] ); data.then(function(d) { console.log(d.data); });",
+    "isAsync": true
+  },
+  {
+    "name": "createAutoSaver",
+    "namespace": "CustomFormRules.formsPortal.createAutoSaver",
+    "category": "Forms Portal",
+    "source": "ui.apps/.../clientlib-custom-functions/js/forms-portal.js",
+    "params": [
+      {
+        "name": "formPath",
+        "type": "string",
+        "optional": false,
+        "description": "The AEM form container path."
+      },
+      {
+        "name": "userId",
+        "type": "string",
+        "optional": false,
+        "description": "The user identifier."
+      },
+      {
+        "name": "delayMs",
+        "type": "number",
+        "optional": false,
+        "description": "=30000] - Debounce delay in milliseconds (default 30s)."
+      }
+    ],
+    "returns": "Function",
+    "description": "Auto-save form data with debouncing. Returns a function that, when called, schedules a draft save after the specified delay. @name createAutoSaver @function @param {string} formPath - The AEM form container path. @param {string} userId - The user identifier. @param {number} [delayMs=30000] - Debounce delay in milliseconds (default 30s). @returns {Function} A function to trigger auto-save with current data. @example var autoSave = CustomFormRules.formsPortal.createAutoSaver( '/content/forms/af/loan-application', 'user123', 5000 ); // Call autoSave(jsonData) to trigger debounced save",
+    "isAsync": true
+  },
+  {
+    "name": "searchForms",
+    "namespace": "CustomFormRules.formsPortal.searchForms",
+    "category": "Forms Portal",
+    "source": "ui.apps/.../clientlib-custom-functions/js/forms-portal.js",
+    "params": [
+      {
+        "name": "query",
+        "type": "string",
+        "optional": false,
+        "description": "The search query."
+      }
+    ],
+    "returns": "Promise<Array>",
+    "description": "Search forms by title or description. Performs client-side filtering of available forms. @name searchForms @function @param {string} query - The search query. @returns {Promise<Array>} Array of matching form objects. @example var results = CustomFormRules.formsPortal.searchForms('loan'); results.then(function(f) { console.log(f.length + ' matches'); });",
+    "isAsync": true
+  },
+  {
+    "name": "hasDraft",
+    "namespace": "CustomFormRules.formsPortal.hasDraft",
+    "category": "Forms Portal",
+    "source": "ui.apps/.../clientlib-custom-functions/js/forms-portal.js",
+    "params": [
+      {
+        "name": "formPath",
+        "type": "string",
+        "optional": false,
+        "description": "The AEM form container path."
+      },
+      {
+        "name": "userId",
+        "type": "string",
+        "optional": false,
+        "description": "The user identifier."
+      }
+    ],
+    "returns": "Promise<boolean>",
+    "description": "Check if a form has a saved draft for a specific user. @name hasDraft @function @param {string} formPath - The AEM form container path. @param {string} userId - The user identifier. @returns {Promise<boolean>} True if a draft exists. @example var exists = CustomFormRules.formsPortal.hasDraft('/content/forms/af/loan-application', 'user123'); exists.then(function(e) { if (e) console.log('Draft exists'); });",
+    "isAsync": false
+  },
+  {
+    "name": "fetchLocationByZip",
+    "namespace": "CustomFormRules.fetchLocationByZip",
+    "category": "Geolocation",
+    "source": "ui.apps/.../clientlib-custom-functions/js/geolocation.js",
+    "params": [
+      {
+        "name": "zipCode",
+        "type": "string",
+        "optional": false,
+        "description": "The 5-digit or 9-digit zip code."
+      }
+    ],
+    "returns": "promise",
+    "description": "Fetch City and State by ZIP Code from external API. @name fetchLocationByZip @function @param {string} zipCode The 5-digit or 9-digit zip code. @return {promise} Promise resolving to \"City, ST\" or error message.",
+    "isAsync": true
+  },
+  {
+    "name": "lookupZipCodeBackend",
+    "namespace": "CustomFormRules.lookupZipCodeBackend",
+    "category": "Geolocation",
+    "source": "ui.apps/.../clientlib-custom-functions/js/geolocation.js",
+    "params": [
+      {
+        "name": "zipCode",
+        "type": "string",
+        "optional": false,
+        "description": "The 5-digit or 9-digit zip code."
+      }
+    ],
+    "returns": "promise",
+    "description": "Fetch City and State by ZIP Code from AEM backend database. @name lookupZipCodeBackend @function @param {string} zipCode The 5-digit or 9-digit zip code. @return {promise} Promise resolving to \"City, ST\" or error message.",
+    "isAsync": true
+  },
+  {
+    "name": "calculateDistance",
+    "namespace": "CustomFormRules.calculateDistance",
+    "category": "Geolocation",
+    "source": "ui.apps/.../clientlib-custom-functions/js/geolocation.js",
+    "params": [
+      {
+        "name": "lat1",
+        "type": "number",
+        "optional": false,
+        "description": "Latitude of first point."
+      },
+      {
+        "name": "lon1",
+        "type": "number",
+        "optional": false,
+        "description": "Longitude of first point."
+      },
+      {
+        "name": "lat2",
+        "type": "number",
+        "optional": false,
+        "description": "Latitude of second point."
+      },
+      {
+        "name": "lon2",
+        "type": "number",
+        "optional": false,
+        "description": "Longitude of second point."
+      }
+    ],
+    "returns": "number",
+    "description": "Calculate distance between two coordinates using the Haversine formula. @name calculateDistance @function @param {number} lat1 Latitude of first point. @param {number} lon1 Longitude of first point. @param {number} lat2 Latitude of second point. @param {number} lon2 Longitude of second point. @return {number} Distance in miles.",
+    "isAsync": false
+  },
+  {
+    "name": "validateUSStateCode",
+    "namespace": "CustomFormRules.validateUSStateCode",
+    "category": "Geolocation",
+    "source": "ui.apps/.../clientlib-custom-functions/js/geolocation.js",
+    "params": [
+      {
+        "name": "state",
+        "type": "string",
+        "optional": false,
+        "description": "The 2-letter state code."
+      }
+    ],
+    "returns": "boolean",
+    "description": "Validate a US state abbreviation. @name validateUSStateCode @function @param {string} state The 2-letter state code. @return {boolean} True if valid US state/territory code.",
+    "isAsync": false
+  },
+  {
+    "name": "getStateName",
+    "namespace": "CustomFormRules.getStateName",
+    "category": "Geolocation",
+    "source": "ui.apps/.../clientlib-custom-functions/js/geolocation.js",
+    "params": [
+      {
+        "name": "stateCode",
+        "type": "string",
+        "optional": false,
+        "description": "The 2-letter state code."
+      }
+    ],
+    "returns": "string",
+    "description": "Get full state name from 2-letter abbreviation. @name getStateName @function @param {string} stateCode The 2-letter state code. @return {string} Full state name, or empty string if invalid.",
+    "isAsync": false
+  },
+  {
+    "name": "slugify",
+    "namespace": "CustomFormRules.slugify",
+    "category": "Strings",
+    "source": "ui.apps/.../clientlib-custom-functions/js/string-utils.js",
+    "params": [
+      {
+        "name": "text",
+        "type": "string",
+        "optional": false,
+        "description": "The input text."
+      }
+    ],
+    "returns": "string",
+    "description": "Convert string to URL-safe slug. @name slugify @function @param {string} text The input text. @return {string} URL-safe slug (e.g., \"Hello World!\" -> \"hello-world\").",
+    "isAsync": false
+  },
+  {
+    "name": "camelCase",
+    "namespace": "CustomFormRules.camelCase",
+    "category": "Strings",
+    "source": "ui.apps/.../clientlib-custom-functions/js/string-utils.js",
+    "params": [
+      {
+        "name": "text",
+        "type": "string",
+        "optional": false,
+        "description": "The input text."
+      }
+    ],
+    "returns": "string",
+    "description": "Convert string to camelCase. @name camelCase @function @param {string} text The input text. @return {string} camelCase string (e.g., \"Hello World\" -> \"helloWorld\").",
+    "isAsync": false
+  },
+  {
+    "name": "snakeCase",
+    "namespace": "CustomFormRules.snakeCase",
+    "category": "Strings",
+    "source": "ui.apps/.../clientlib-custom-functions/js/string-utils.js",
+    "params": [
+      {
+        "name": "text",
+        "type": "string",
+        "optional": false,
+        "description": "The input text."
+      }
+    ],
+    "returns": "string",
+    "description": "Convert string to snake_case. @name snakeCase @function @param {string} text The input text. @return {string} snake_case string (e.g., \"Hello World\" -> \"hello_world\").",
+    "isAsync": false
+  },
+  {
+    "name": "validateSSN",
+    "namespace": "CustomFormRules.validateSSN",
+    "category": "Validation",
+    "source": "ui.apps/.../clientlib-custom-functions/js/validation.js",
+    "params": [
+      {
+        "name": "ssn",
+        "type": "string",
+        "optional": false,
+        "description": "The SSN string (XXX-XX-XXXX or XXXXXXXXX)."
+      }
+    ],
+    "returns": "boolean",
+    "description": "Validate US Social Security Number (SSN) with full SSA allocation rules. @name validateSSN @function @param {string} ssn The SSN string (XXX-XX-XXXX or XXXXXXXXX). @return {boolean} True if valid.",
+    "isAsync": false
+  },
+  {
+    "name": "validateEIN",
+    "namespace": "CustomFormRules.validateEIN",
+    "category": "Validation",
+    "source": "ui.apps/.../clientlib-custom-functions/js/validation.js",
+    "params": [
+      {
+        "name": "ein",
+        "type": "string",
+        "optional": false,
+        "description": "The EIN string."
+      }
+    ],
+    "returns": "boolean",
+    "description": "Validate US Employer Identification Number (EIN). @name validateEIN @function @param {string} ein The EIN string. @return {boolean} True if valid.",
+    "isAsync": false
+  },
+  {
+    "name": "validateITIN",
+    "namespace": "CustomFormRules.validateITIN",
+    "category": "Validation",
+    "source": "ui.apps/.../clientlib-custom-functions/js/validation.js",
+    "params": [
+      {
+        "name": "itin",
+        "type": "string",
+        "optional": false,
+        "description": "The ITIN string."
+      }
+    ],
+    "returns": "boolean",
+    "description": "Validate US Individual Taxpayer Identification Number (ITIN). @name validateITIN @function @param {string} itin The ITIN string. @return {boolean} True if valid.",
+    "isAsync": false
+  },
+  {
+    "name": "validateIPv6",
+    "namespace": "CustomFormRules.validateIPv6",
+    "category": "Validation",
+    "source": "ui.apps/.../clientlib-custom-functions/js/validation.js",
+    "params": [
+      {
+        "name": "ip",
+        "type": "string",
+        "optional": false,
+        "description": "The IPv6 string."
+      }
+    ],
+    "returns": "boolean",
+    "description": "Validate IPv6 address (full, compressed, and mixed notation). @name validateIPv6 @function @param {string} ip The IPv6 string. @return {boolean} True if valid.",
+    "isAsync": false
+  },
+  {
+    "name": "validateCreditCardLuhn",
+    "namespace": "CustomFormRules.validateCreditCardLuhn",
+    "category": "Validation",
+    "source": "ui.apps/.../clientlib-custom-functions/js/validation.js",
+    "params": [
+      {
+        "name": "cardNumber",
+        "type": "string",
+        "optional": false,
+        "description": "The credit card number."
+      }
+    ],
+    "returns": "boolean",
+    "description": "Validate credit card number using the Luhn algorithm. @name validateCreditCardLuhn @function @param {string} cardNumber The credit card number. @return {boolean} True if passes Luhn check.",
+    "isAsync": false
+  },
+  {
+    "name": "validateCanadianSIN",
+    "namespace": "CustomFormRules.validateCanadianSIN",
+    "category": "Validation",
+    "source": "ui.apps/.../clientlib-custom-functions/js/validation.js",
+    "params": [
+      {
+        "name": "sin",
+        "type": "string",
+        "optional": false,
+        "description": "The SIN string."
+      }
+    ],
+    "returns": "boolean",
+    "description": "Validate Canadian Social Insurance Number (SIN) using Luhn algorithm. @name validateCanadianSIN @function @param {string} sin The SIN string. @return {boolean} True if valid.",
+    "isAsync": false
+  },
+  {
+    "name": "validateIBAN",
+    "namespace": "CustomFormRules.validateIBAN",
+    "category": "Validation",
+    "source": "ui.apps/.../clientlib-custom-functions/js/validation.js",
+    "params": [
+      {
+        "name": "iban",
+        "type": "string",
+        "optional": false,
+        "description": "The IBAN string."
+      }
+    ],
+    "returns": "boolean",
+    "description": "Validate IBAN (International Bank Account Number) with mod-97 checksum. @name validateIBAN @function @param {string} iban The IBAN string. @return {boolean} True if valid (format + checksum).",
+    "isAsync": false
+  },
+  {
+    "name": "acrobatBeep",
+    "namespace": "CustomFormRules.xfa.acrobatBeep",
+    "category": "Acrobat API",
+    "source": "ui.apps/.../clientlib-custom-functions/js/xfa-acrobat.js",
+    "params": [
+      {
+        "name": "cAlertType",
+        "type": "number",
+        "optional": false,
+        "description": "=0] - 0 = default, 1 = warning, 2 = error."
+      }
+    ],
+    "returns": "boolean",
+    "description": "Plays a system alert sound. Falls back to Web Audio API in HTML5 environments. @name acrobatBeep @function @param {number} [cAlertType=0] - 0 = default, 1 = warning, 2 = error. @return {boolean} True if the beep was played successfully. @example CustomFormRules.xfa.acrobatBeep(); // default beep CustomFormRules.xfa.acrobatBeep(1); // warning beep CustomFormRules.xfa.acrobatBeep(2); // error beep",
+    "isAsync": false
+  },
+  {
+    "name": "resolveNodes",
+    "namespace": "CustomFormRules.xfa.resolveNodes",
+    "category": "XFA Form",
+    "source": "ui.apps/.../clientlib-custom-functions/js/xfa-form.js",
+    "params": [
+      {
+        "name": "somPath",
+        "type": "string",
+        "optional": false,
+        "description": "The SOM path pattern that may match multiple nodes."
+      }
+    ],
+    "returns": "Array",
+    "description": "Safely resolves multiple XFA nodes by SOM path, returning an array. @name resolveNodes @function @param {string} somPath - The SOM path pattern that may match multiple nodes. @return {Array} Array of resolved XFA nodes, or an empty array if none found. @example var fields = CustomFormRules.xfa.resolveNodes(\"xfa.form.#subform[0].#field[*]\"); fields.forEach(function (field) { console.log(\"Field:\", field.name, \"Value:\", field.rawValue); });",
+    "isAsync": false
+  },
+  {
+    "name": "getInvalidFields",
+    "namespace": "CustomFormRules.xfa.getInvalidFields",
+    "category": "XFA Form",
+    "source": "ui.apps/.../clientlib-custom-functions/js/xfa-form.js",
+    "params": [],
+    "returns": "Array<Object>",
+    "description": "Returns a list of fields that failed validation, including their SOM paths and error messages. @name getInvalidFields @function @return {Array<Object>} Array of objects with somPath, name, and errorMessage properties. @example var invalidFields = CustomFormRules.xfa.getInvalidFields(); invalidFields.forEach(function (field) { console.log(\"Invalid:\", field.somPath, \"Error:\", field.errorMessage); });",
+    "isAsync": false
+  },
+  {
+    "name": "xfaAvg",
+    "namespace": "CustomFormRules.xfa.xfaAvg",
+    "category": "FormCalc",
+    "source": "ui.apps/.../clientlib-custom-functions/js/xfa-formcalc.js",
+    "params": [
+      {
+        "name": "values",
+        "type": "Array<number|string>",
+        "optional": false,
+        "description": "An array of numbers or coercible strings."
+      }
+    ],
+    "returns": "number",
+    "description": "Returns the arithmetic mean of a list of numeric values. @name xfaAvg @function @param {Array<number|string>} values - An array of numbers or coercible strings. @return {number} The average of valid entries, or NaN if none valid. @example var avg = CustomFormRules.xfa.xfaAvg([10, 20, 30]); // 20 var avg2 = CustomFormRules.xfa.xfaAvg([\"1\", \"2\", \"3\"]); // 2",
+    "isAsync": false
+  },
+  {
+    "name": "xfaRound",
+    "namespace": "CustomFormRules.xfa.xfaRound",
+    "category": "FormCalc",
+    "source": "ui.apps/.../clientlib-custom-functions/js/xfa-formcalc.js",
+    "params": [
+      {
+        "name": "value",
+        "type": "number",
+        "optional": false,
+        "description": "The number to round."
+      },
+      {
+        "name": "places",
+        "type": "number",
+        "optional": false,
+        "description": "=0] - Decimal places."
+      }
+    ],
+    "returns": "number",
+    "description": "Rounds a number to a specified number of decimal places (half-up). @name xfaRound @function @param {number} value - The number to round. @param {number} [places=0] - Decimal places. @return {number} The rounded value. @example var r1 = CustomFormRules.xfa.xfaRound(2.675, 2); // 2.68 var r2 = CustomFormRules.xfa.xfaRound(2.5); // 3",
+    "isAsync": false
+  },
+  {
+    "name": "xfaMin",
+    "namespace": "CustomFormRules.xfa.xfaMin",
+    "category": "FormCalc",
+    "source": "ui.apps/.../clientlib-custom-functions/js/xfa-formcalc.js",
+    "params": [
+      {
+        "name": "values",
+        "type": "Array<number|string>",
+        "optional": false,
+        "description": "Array of numbers."
+      }
+    ],
+    "returns": "number",
+    "description": "Returns the smallest value from an array of numbers. @name xfaMin @function @param {Array<number|string>} values - Array of numbers. @return {number} The minimum valid value, or NaN if none. @example var m = CustomFormRules.xfa.xfaMin([5, 3, 8, 1]); // 1",
+    "isAsync": false
+  },
+  {
+    "name": "xfaMax",
+    "namespace": "CustomFormRules.xfa.xfaMax",
+    "category": "FormCalc",
+    "source": "ui.apps/.../clientlib-custom-functions/js/xfa-formcalc.js",
+    "params": [
+      {
+        "name": "values",
+        "type": "Array<number|string>",
+        "optional": false,
+        "description": "Array of numbers."
+      }
+    ],
+    "returns": "number",
+    "description": "Returns the largest value from an array of numbers. @name xfaMax @function @param {Array<number|string>} values - Array of numbers. @return {number} The maximum valid value, or NaN if none. @example var m = CustomFormRules.xfa.xfaMax([5, 3, 8, 1]); // 8",
+    "isAsync": false
+  },
+  {
+    "name": "xfaSum",
+    "namespace": "CustomFormRules.xfa.xfaSum",
+    "category": "FormCalc",
+    "source": "ui.apps/.../clientlib-custom-functions/js/xfa-formcalc.js",
+    "params": [
+      {
+        "name": "values",
+        "type": "Array<number|string>",
+        "optional": false,
+        "description": "Array of numbers."
+      }
+    ],
+    "returns": "number",
+    "description": "Returns the sum of all values in an array. @name xfaSum @function @param {Array<number|string>} values - Array of numbers. @return {number} The total of all valid entries. @example var s = CustomFormRules.xfa.xfaSum([1, 2, 3, 4]); // 10",
+    "isAsync": false
+  },
+  {
+    "name": "xfaDateNow",
+    "namespace": "CustomFormRules.xfa.xfaDateNow",
+    "category": "FormCalc",
+    "source": "ui.apps/.../clientlib-custom-functions/js/xfa-formcalc.js",
+    "params": [],
+    "returns": "string",
+    "description": "Returns the current date as a string in YYYYMMDD format. @name xfaDateNow @function @return {string} Today's date in YYYYMMDD format. @example var today = CustomFormRules.xfa.xfaDateNow(); // e.g. \"20260722\"",
+    "isAsync": false
+  },
+  {
+    "name": "xfaTimeNow",
+    "namespace": "CustomFormRules.xfa.xfaTimeNow",
+    "category": "FormCalc",
+    "source": "ui.apps/.../clientlib-custom-functions/js/xfa-formcalc.js",
+    "params": [],
+    "returns": "string",
+    "description": "Returns the current time as a string in HHMMSS (24-hour) format. @name xfaTimeNow @function @return {string} The current time in HHMMSS format. @example var now = CustomFormRules.xfa.xfaTimeNow(); // e.g. \"143059\"",
+    "isAsync": false
+  },
+  {
+    "name": "xfaDateToNum",
+    "namespace": "CustomFormRules.xfa.xfaDateToNum",
+    "category": "FormCalc",
+    "source": "ui.apps/.../clientlib-custom-functions/js/xfa-formcalc.js",
+    "params": [
+      {
+        "name": "dateStr",
+        "type": "string",
+        "optional": false,
+        "description": "A date string."
+      }
+    ],
+    "returns": "number",
+    "description": "Converts a date string to a numeric value (days since FormCalc epoch Dec 30, 1899). Accepts MM/DD/YYYY or YYYYMMDD format. @name xfaDateToNum @function @param {string} dateStr - A date string. @return {number} The number of days since the FormCalc epoch. @example var n = CustomFormRules.xfa.xfaDateToNum(\"12/25/2024\"); // 45654",
+    "isAsync": false
+  },
+  {
+    "name": "xfaNumToDate",
+    "namespace": "CustomFormRules.xfa.xfaNumToDate",
+    "category": "FormCalc",
+    "source": "ui.apps/.../clientlib-custom-functions/js/xfa-formcalc.js",
+    "params": [
+      {
+        "name": "num",
+        "type": "number",
+        "optional": false,
+        "description": "The number of days since the FormCalc epoch."
+      }
+    ],
+    "returns": "string",
+    "description": "Converts a numeric day-count (days since FormCalc epoch) back to MM/DD/YYYY. @name xfaNumToDate @function @param {number} num - The number of days since the FormCalc epoch. @return {string} The corresponding date in MM/DD/YYYY format. @example var d = CustomFormRules.xfa.xfaNumToDate(45654); // \"12/25/2024\"",
+    "isAsync": false
+  },
+  {
+    "name": "getLastInstanceField",
+    "namespace": "CustomFormRules.xfa.getLastInstanceField",
+    "category": "XFA Instances",
+    "source": "ui.apps/.../clientlib-custom-functions/js/xfa-instance.js",
+    "params": [
+      {
+        "name": "instanceManagerSom",
+        "type": "string",
+        "optional": false,
+        "description": "SOM expression that resolves to the instance manager"
+      },
+      {
+        "name": "fieldName",
+        "type": "string",
+        "optional": false,
+        "description": "Name of the field relative to each instance subform"
+      }
+    ],
+    "returns": "string|null",
+    "description": "Retrieve the value of a field within the last instance of a repeated element. @name getLastInstanceField @function @param {string} instanceManagerSom - SOM expression that resolves to the instance manager @param {string} fieldName - Name of the field relative to each instance subform @return {string|null} the rawValue of the field, or null if it could not be resolved @example var lastName = CustomFormRules.xfa.getLastInstanceField(\"form1.body.table.row\", \"txtName\"); if (lastName !== null) { xfa.host.messageBox(\"Last entered name: \" + lastName); }",
+    "isAsync": false
+  },
+  {
+    "name": "clearAllInstances",
+    "namespace": "CustomFormRules.xfa.clearAllInstances",
+    "category": "XFA Instances",
+    "source": "ui.apps/.../clientlib-custom-functions/js/xfa-instance.js",
+    "params": [
+      {
+        "name": "somExpression",
+        "type": "string",
+        "optional": false,
+        "description": "SOM expression that resolves to the instance manager"
+      }
+    ],
+    "returns": "boolean",
+    "description": "Remove all instances except the first one, resetting the repeated element to a single instance. @name clearAllInstances @function @param {string} somExpression - SOM expression that resolves to the instance manager @return {boolean} true if all extra instances were removed, false on error @example var cleared = CustomFormRules.xfa.clearAllInstances(\"form1.body.table.row\"); if (cleared) { xfa.host.messageBox(\"Table reset to a single row.\"); }",
+    "isAsync": false
+  },
+  {
+    "name": "getFieldPageNumber",
+    "namespace": "CustomFormRules.xfa.getFieldPageNumber",
+    "category": "XFA Layout",
+    "source": "ui.apps/.../clientlib-custom-functions/js/xfa-layout.js",
+    "params": [
+      {
+        "name": "fieldName",
+        "type": "string",
+        "optional": false,
+        "description": "The name of the field as resolved in XFA."
+      }
+    ],
+    "returns": "number",
+    "description": "Returns the 0-based page number that a field resides on by walking the parent chain. @name getFieldPageNumber @function @param {string} fieldName - The name of the field as resolved in XFA. @return {number} The 0-based page index, or -1 if the field cannot be located. @example var pageNum = CustomFormRules.xfa.getFieldPageNumber(\"subform1.signatureField1\"); if (pageNum >= 0) { xfa.host.messageBox(\"The field is on page \" + (pageNum + 1) + \".\"); }",
+    "isAsync": false
+  },
+  {
+    "name": "centerFieldHorizontally",
+    "namespace": "CustomFormRules.xfa.centerFieldHorizontally",
+    "category": "XFA Layout",
+    "source": "ui.apps/.../clientlib-custom-functions/js/xfa-layout.js",
+    "params": [
+      {
+        "name": "fieldName",
+        "type": "string",
+        "optional": false,
+        "description": "The name of the field as resolved in XFA."
+      }
+    ],
+    "returns": "boolean",
+    "description": "Centers a field horizontally within its parent subform or container. @name centerFieldHorizontally @function @param {string} fieldName - The name of the field as resolved in XFA. @return {boolean} True if the field was centered successfully, false otherwise. @example var centered = CustomFormRules.xfa.centerFieldHorizontally(\"subform1.submitButton\"); if (centered) { xfa.host.messageBox(\"Button centered on its parent.\"); }",
+    "isAsync": false
+  }
+]

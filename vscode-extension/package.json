@@ -4,11 +4,11 @@
   "description": "Autocomplete, hover docs, and signature help for 101 AEM Forms custom functions",
   "version": "1.0.0",
   "publisher": "narendragandhi",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "icon": "images/icon.png",
   "repository": {
     "type": "git",
-    "url": "https://github.com/narendragandhi/aem-forms-rules-editor"
+    "url": "https://github.com/narendragandhi/aem-forms-rules-editor.git"
   },
   "engines": {
     "vscode": "^1.74.0"
@@ -29,7 +29,8 @@
   ],
   "activationEvents": [
     "onLanguage:javascript",
-    "onLanguage:typescript"
+    "onLanguage:typescript",
+    "onLanguage:aem-forms-rules"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -39,9 +40,6 @@
         "aliases": [
           "AEM Forms Rules",
           "aem-forms-rules"
-        ],
-        "extensions": [
-          ".js"
         ],
         "configuration": "./language-configuration.json"
       }
@@ -60,7 +58,8 @@
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
-    "lint": "eslint src --ext ts",
+    "catalog:generate": "node ../scripts/generate-function-catalog.mjs --write",
+    "catalog:check": "node ../scripts/generate-function-catalog.mjs --check",
     "package": "vsce package"
   },
   "devDependencies": {

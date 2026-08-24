@@ -33,7 +33,7 @@ export class AemFormsCompletionProvider implements vscode.CompletionItemProvider
     private getRootItems(): vscode.CompletionItem[] {
         const item = new vscode.CompletionItem('CustomFormRules', vscode.CompletionItemKind.Module);
         item.detail = 'AEM Forms Rules Editor';
-        item.documentation = 'AEM Forms Rules Editor — 101 custom functions for Adaptive Forms and XFA IC fragments.';
+        item.documentation = `AEM Forms Rules Editor — ${FUNCTIONS.length} custom functions for Adaptive Forms and XFA IC fragments.`;
         item.insertText = 'CustomFormRules';
         return [item];
     }

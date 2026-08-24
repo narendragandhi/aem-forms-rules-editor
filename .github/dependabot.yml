@@ -1,0 +1,14 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /ui.frontend
+    schedule:
+      interval: monthly
+  - package-ecosystem: npm
+    directory: /vscode-extension
+    schedule:
+      interval: monthly
+  - package-ecosystem: maven
+    directory: /
+    schedule:
+      interval: monthly

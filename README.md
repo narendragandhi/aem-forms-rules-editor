@@ -1,6 +1,15 @@
-# AEM Forms Rules Editor — Comprehensive Library
+# AEM Forms Rules Editor
 
-A production-ready rules library for AEM Forms — covering both **Adaptive Forms (AFv2) Core Components** and **Interactive Communication (IC) Fragments with XFA scripting**. Includes **96 client-side JavaScript functions** (53 AFv2 + 16 XFA IC + 27 Integration), **4 server-side OSGi Submit Actions**, **7 backend proxy Servlets**, and **2 Prefill Services**.
+A reference implementation and reusable rules library for AEM Forms, covering **Adaptive Forms (AFv2) Core Components** and **Interactive Communication (IC) Fragments with XFA scripting**. It includes client-side JavaScript utilities, AEM OSGi services, example endpoints, sample content, and a VS Code extension.
+
+This project is intended for development, prototyping, and adaptation to your own AEM Forms deployment. The sample integrations and data are not production services: review authentication, authorization, privacy, rate limiting, input validation, audit logging, and external API terms before deploying them.
+
+[![Build](https://github.com/narendragandhi/aem-forms-rules-editor/actions/workflows/ci.yml/badge.svg)](https://github.com/narendragandhi/aem-forms-rules-editor/actions/workflows/ci.yml)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE)
+
+## Project status
+
+This is an actively evolving reference project. APIs, sample content, and the VS Code extension metadata may change between releases. See [CHANGELOG.md](CHANGELOG.md) for notable changes and [SUPPORT.md](SUPPORT.md) for the support boundary.
 
 Every function contains real logic — no thin wrappers.
 
@@ -12,11 +21,13 @@ Every function contains real logic — no thin wrappers.
 - AEM as a Cloud Service (or AEM 6.5 with Forms add-on)
 - Java 11+, Maven 3.3.9+
 
-### Build & Deploy
+### Build & deploy
 ```bash
 mvn clean install
 mvn clean install -PautoInstallPackage              # Deploy to local AEM (localhost:4502)
 ```
+
+The full build expects an AEM SDK/Forms SDK-compatible Maven environment and may download Adobe and third-party artifacts. For a fast local unit-test cycle, run `mvn -pl core test`. See [CONTRIBUTING.md](CONTRIBUTING.md) for prerequisites and validation commands.
 
 ### Load in a Form
 1. Select the **Adaptive Form Container** component
@@ -25,6 +36,8 @@ mvn clean install -PautoInstallPackage              # Deploy to local AEM (local
 ---
 
 ## Function Reference
+
+The machine-readable [function catalog](docs/function-catalog.json) is generated from the AEM client-library JSDoc and checked against the VS Code extension catalog. Run `cd vscode-extension && npm run catalog:check` after changing a client-side function.
 
 ### AFv2 Functions (53)
 
@@ -281,8 +294,16 @@ aem-forms-rules-editor/
 
 See [DEMO_SCRIPT.md](DEMO_SCRIPT.md) for a complete 12-minute demo video script with copy-paste console examples.
 
+## Security and responsible use
+
+The sample endpoints under `/bin/rules-api/*` are application examples, not a security boundary. Do not expose them without adding deployment-appropriate authentication and authorization. Never use the example credentials in a shared or production environment. Review [SECURITY.md](SECURITY.md) before deploying.
+
+## Contributing
+
+Bug reports, documentation improvements, tests, and focused feature changes are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md) and follow the [Code of Conduct](CODE_OF_CONDUCT.md).
+
 ---
 
 ## License
 
-See [LICENSE](LICENSE).
+Licensed under the [Apache License, Version 2.0](LICENSE).

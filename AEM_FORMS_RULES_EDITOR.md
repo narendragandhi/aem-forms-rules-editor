@@ -1,8 +1,8 @@
 # AEM Forms Rules Editor — Library Guide
 
-A production-ready rules library for AEM Forms — covering both **Adaptive Forms (AFv2) Core Components** and **Interactive Communication (IC) Fragments with XFA scripting**. **69 client-side JavaScript functions** (53 AFv2 + 16 XFA IC), **4 Submit Actions**, **4 Servlets**, and **2 Prefill Services**.
+A reference rules library for AEM Forms — covering both **Adaptive Forms (AFv2) Core Components** and **Interactive Communication (IC) Fragments with XFA scripting**. It includes client-side JavaScript functions, AEM Forms submit actions, servlets, prefill services, sample content, and a VS Code extension. See the root [README](README.md) for the current component inventory.
 
-Every function contains real logic — no thin wrappers.
+The code is intended for development, prototyping, and adaptation. Review and harden all sample integrations before production use.
 
 ---
 
